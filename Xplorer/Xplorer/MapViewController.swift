@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import os.log
 import GoogleMaps
 import GooglePlaces
 
@@ -52,9 +53,24 @@ class MapViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    //MARK: Navigation
+    
+    //This method lets you prepare the view controller before it's presented
+    override func prepare (for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        //TODO: THIS IS WHERE WE WILL WANT TO STORE THE TIMES AND LOCATIONS FROM THE TIME AND LOCATION VIEW
+    }
+    
+    //MARK: Actions
+    @IBAction func unwindToMapView(sender: UIStoryboardSegue) {
+        
+    }
 
 
 }
+
+//MARK: Delegates
 
 // Delegates to handle events for the location manager.
 extension MapViewController: CLLocationManagerDelegate {
