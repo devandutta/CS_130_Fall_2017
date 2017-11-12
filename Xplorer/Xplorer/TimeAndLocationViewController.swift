@@ -10,7 +10,7 @@ import UIKit
 import GoogleMaps
 import GooglePlaces
 
-class TimeAndLocationViewController: UIViewController {
+class TimeAndLocationViewController: UIViewController, UITextFieldDelegate {
     
     //MARK: Properties
     
@@ -24,7 +24,10 @@ class TimeAndLocationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        startLocation.delegate = self
+        startTime.delegate = self
+        endLocation.delegate = self
+        endTime.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -32,7 +35,18 @@ class TimeAndLocationViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
+    //MARK: UITextFieldDelegate
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        //Hide the keyboard
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        
+    }
+    
     /*
     // MARK: - Navigation
 
