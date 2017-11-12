@@ -11,7 +11,7 @@ import os.log
 import GoogleMaps
 import GooglePlaces
 
-class MapViewController: UIViewController {
+class MapViewController: UIViewController, GMSAutocompleteViewControllerDelegate {
     //MARK: Properties
     
     var locationManager = CLLocationManager()
@@ -45,6 +45,20 @@ class MapViewController: UIViewController {
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         mapView.isMyLocationEnabled = true
         
+        // reset location to my location when the button is pressed
+        mapView.settings.myLocationButton = true
+        
+        
+        
+        // create a marker to show where you at
+        
+        let marker = GMSMarker()
+        marker.position = defaultLocation.coordinate
+        marker.title = "Cupertino"
+        marker.snippet = "California"
+        marker.map = mapView
+        
+        
         //Add the map to the view
         view.addSubview(mapView)
     }
@@ -67,6 +81,36 @@ class MapViewController: UIViewController {
         
     }
 
+    
+    //MARK: Google autocomplete
+    
+    func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
+        let camera = GMSCameraPosition.camera(withLatitude: place.coordinate.latitude,
+                                              longitude: place.coordinate.longitude,
+                                              zoom: 15.0)
+        self.mapView.camera = camera
+        self.dismiss(animated: true, completion: nil) // dismiss after selecting a place
+    }
+    
+    // fail with error
+    
+    func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error){
+        print("Error AutoComplete \(error) )")
+    }
+    
+    
+    func wasCancelled(_ viewController: GMSAutocompleteViewController) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func openSearchAddress(_ sender: Any) {
+        let autoCompleteController = GMSAutocompleteViewController()
+        autoCompleteController.delegate = self
+        self.locationManager.startUpdatingLocation()
+        self.present(autoCompleteController, animated: true, completion: nil)
+        
+    }
+    
 
 }
 

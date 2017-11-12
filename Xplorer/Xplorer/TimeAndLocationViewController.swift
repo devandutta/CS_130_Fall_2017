@@ -19,6 +19,8 @@ class TimeAndLocationViewController: UIViewController {
     @IBOutlet weak var endLocation: UITextField!
     @IBOutlet weak var endTime: UITextField!
     
+    
+ 
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -42,3 +44,8 @@ class TimeAndLocationViewController: UIViewController {
     */
 
 }
+
+
+
+
+
