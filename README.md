@@ -26,6 +26,16 @@ We are planning to implement two useful filters, described as follows:
 ### Feature 3: Effective route planning based on current itinerary
 Once the user selects a particular set of places to visit, the application would enable to user to find the most effective route covering all points of interest. The application would be able to minimize both the distance travelled by the user and the time taken to travel between distances. Route planning would also involve modes of transportation. For instance, assume that the user is interested in museum 1, waterfall 1 and hill 1. The most effective route between the museum and the hill could involve travel via car or ride-share, meanwhile the most effective route between the hill and the waterfall could involve hiking through the hill. The application would consider the user’s priority and suggest the most optimal route accordingly.
 
+# App Mockups and Screenshots
+
+![Image1](images/snap1.PNG)
+
+The Splash Screen introduces the concept and usage of the app to the users. The first screen allows them to select some interests to be used throughout the application. The main screen lets them pick a starting and ending location and time.
+
+![Image2](images/snap2.PNG)
+
+Once the user has clicked on Find Itineraries, it shows them them an itinerary that they can browse through or refresh after filtering on the basis of cost and location history.
+
 # User Stories
 1. A brand new user to the app will begin by downloading the app, entering his/her personal interests, and then specifying start time and departure location, as well as end time and arrival location.  The app will return a list of POIs (containing associated costs and transportation methods) that are along the fastest route to the arrival location.  The user, delighted by this automation, follows the itinerary in the app and enjoys the day!
 1. A user who has used the app before will be able to open the app without specifying his/her interests again (but does have the option to change them if he/she so desires), enter the start and end times and locations, and then filter the returned list of POIs to get back only new places that he/she has not visited yet.
@@ -52,12 +62,9 @@ Once the user selects a particular set of places to visit, the application would
   1. If the user wants to modify his/her interests, then he/she can press the “Back” button, and follow step 2a to go to Settings and modify his/her profile interests.
 1. The user would then follow steps 7-9 of the previous scenario.
 
-
-
-
 # UML Use Case Diagram
 
-
+![UML Use Case](images/useCase.PNG)
 
 # Feasibility
 It is inevitable that when visiting a new city, possibly for the first time, it requires an ample amount of meticulous planning and preparation. And while apps such as Google Maps, Yelp, and TripAdvisor might help you figure out popular destinations to visit, it is still currently up to the consumer to manually wade through a plethora of online suggestions, tourist attractions, and friends’ recommendations to see which places they can explore in a limited time frame at a reasonable travel distance and price.
@@ -68,7 +75,7 @@ To successfully develop and design this app, it is necessary to keep common pitf
 
 **UML Class Diagram below**
 
-
+![UML](images/UML.PNG)
 
 **Explanation of Class Diagram:**
 The app will be run by UIViewControllers, derived from UIViewController from the UIKit in iOS.  UIResponder and UIApplicationDelegate have been included because AppDelegate needs to implement and extend them, respectively.  UIViewController has been included because every ViewController will have to extend it.  All object types that begin with “GMS” indicate Google Mapping Services objects from the Google Maps API, as well as the Google Places API.  All other object types that begin with “UI” indicate views that were used from Apple’s UIKit for iOS.
