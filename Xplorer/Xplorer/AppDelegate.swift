@@ -13,9 +13,14 @@ import GooglePlaces
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    //MARK: Properties
+    
     var window: UIWindow?
+    // location manager is a singleton and is shared via app delegate
+    var locationManager = CLLocationManager()
 
-
+    //MARK: Methods
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         GMSServices.provideAPIKey("AIzaSyByB7OVg04q9jIAawE1i4IN0Il8I3Na1pU")
@@ -44,7 +49,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
 
 }
 

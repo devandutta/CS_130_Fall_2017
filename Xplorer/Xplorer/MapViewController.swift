@@ -11,27 +11,32 @@ import os.log
 import GoogleMaps
 import GooglePlaces
 
-class MapViewController: UIViewController, GMSAutocompleteViewControllerDelegate {
+class MapViewController: UIViewController {
     //MARK: Properties
-    
-    var locationManager = CLLocationManager()
+
     var currentLocation: CLLocation?
     var mapView: GMSMapView!
     var placesClient: GMSPlacesClient!
     var zoomLevel: Float = 15.0
-    
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+
     //In case the location preferences have not been set, this is the location of Apple
     let defaultLocation = CLLocation(latitude: 37.33182, longitude: -122.03118)
 
+    /**
+     void: viewDidLoad - this function initializes the location manager
+     TODO: Move initialization to app delegate since the code is shared
+     */
     override func viewDidLoad() {
         super.viewDidLoad()
+
         //Initialize the location manager
-        locationManager = CLLocationManager()
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.requestAlwaysAuthorization()
-        locationManager.distanceFilter = 50
-        locationManager.startUpdatingLocation()
-        locationManager.delegate = self
+        appDelegate.locationManager = CLLocationManager()
+        appDelegate.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        appDelegate.locationManager.requestAlwaysAuthorization()
+        appDelegate.locationManager.distanceFilter = 50
+        appDelegate.locationManager.startUpdatingLocation()
+        appDelegate.locationManager.delegate = self
         
         placesClient = GMSPlacesClient.shared()
         
@@ -81,37 +86,6 @@ class MapViewController: UIViewController, GMSAutocompleteViewControllerDelegate
         
     }
 
-    
-    //MARK: Google autocomplete
-    
-    func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
-        let camera = GMSCameraPosition.camera(withLatitude: place.coordinate.latitude,
-                                              longitude: place.coordinate.longitude,
-                                              zoom: 15.0)
-        self.mapView.camera = camera
-        self.dismiss(animated: true, completion: nil) // dismiss after selecting a place
-    }
-    
-    // fail with error
-    
-    func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error){
-        print("Error AutoComplete \(error) )")
-    }
-    
-    
-    func wasCancelled(_ viewController: GMSAutocompleteViewController) {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    @IBAction func openSearchAddress(_ sender: Any) {
-        let autoCompleteController = GMSAutocompleteViewController()
-        autoCompleteController.delegate = self
-        self.locationManager.startUpdatingLocation()
-        self.present(autoCompleteController, animated: true, completion: nil)
-        
-    }
-    
-
 }
 
 //MARK: Delegates
@@ -155,7 +129,7 @@ extension MapViewController: CLLocationManagerDelegate {
     
     // Handle location manager errors.
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        locationManager.stopUpdatingLocation()
+        appDelegate.locationManager.stopUpdatingLocation()
         print("Error: \(error)")
     }
 }
