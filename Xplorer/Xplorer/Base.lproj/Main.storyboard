@@ -40,7 +40,7 @@
         <!--Enter Time and Location Info-->
         <scene sceneID="JaX-LW-sYL">
             <objects>
-                <viewController id="DKo-oc-eUX" customClass="TimeAndLocationViewController" customModule="Xplorer" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="timeAndLocation" useStoryboardIdentifierAsRestorationIdentifier="YES" id="DKo-oc-eUX" customClass="TimeAndLocationViewController" customModule="Xplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hPU-R1-4nj">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -109,6 +109,7 @@
                             </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <accessibility key="accessibilityConfiguration" identifier="timeAndLocationVC"/>
                         <viewLayoutGuide key="safeArea" id="7n1-Hw-NCv"/>
                     </view>
                     <navigationItem key="navigationItem" title="Enter Time and Location Info" id="B7I-5n-QYA">

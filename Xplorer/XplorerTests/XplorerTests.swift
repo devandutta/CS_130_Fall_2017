@@ -6,14 +6,22 @@
 //  Copyright © 2017 devan.dutta. All rights reserved.
 //
 
+import UIKit
 import XCTest
 @testable import Xplorer
 
 class XplorerTests: XCTestCase {
     
+    // Properties
+    var systemUnderTest:TimeAndLocationViewController!
+    
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        // Put setup code here
+        let storyboard = UIStoryboard(name:"Main", bundle:nil)
+        systemUnderTest = storyboard.instantiateViewController(withIdentifier: "timeAndLocation") as! TimeAndLocationViewController
+        // run view did load
+        _ = systemUnderTest.view
     }
     
     override func tearDown() {
@@ -21,16 +29,17 @@ class XplorerTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testTimeAndLocationViewIsNotNilAfterViewDidLoad(){
+        XCTAssertNotNil(systemUnderTest.view)
     }
     
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    
+    func testStartLocationNotNilAfterViewDidLoad(){
+        XCTAssertNotNil(systemUnderTest.startLocation)
     }
+    
+    // TODO: test start location is set when AutoCompleteViewController is called
+    // TODO: test end location is set
+    
     
 }
