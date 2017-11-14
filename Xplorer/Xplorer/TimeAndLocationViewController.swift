@@ -13,7 +13,7 @@ import GooglePlaces
 class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSAutocompleteViewControllerDelegate {
     
     //MARK: Properties
-    
+    var lastUITextFieldSelected: UITextField?
     
     // Outlets
     @IBOutlet weak var startLocation: UITextField!
@@ -23,7 +23,6 @@ class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSA
     
     // Constants and variables
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    var isStartPlaceKnown = false
     
     // --------------------
     //MARK: SETUP
@@ -51,14 +50,8 @@ class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSA
      This function is invoked whenever the GMSAutocompleteView loads
      */
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
-       
-        if (!isStartPlaceKnown) {
-            self.startLocation.text = "\(place.name), \(place.formattedAddress!)"
-            isStartPlaceKnown = true
-        } else{
-            self.endLocation.text = "\(place.name), \(place.formattedAddress!)"
-        }
-        
+        lastUITextFieldSelected?.text = "\(place.name), \(place.formattedAddress!)"
+        lastUITextFieldSelected = nil
         self.dismiss(animated: true, completion: nil) // dismiss after selecting a place
     }
     
@@ -73,24 +66,28 @@ class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSA
     }
     
     /**
-     This function deals with presenting the autoComplete view
-     whenever the start location is accessed
+    This function deals with presenting the autoComplete view whenever either of the location UITextFields are selected
+    */
+    func handleAutocomplete(sender: UITextField) {
+        let autoCompleteController = GMSAutocompleteViewController()
+        autoCompleteController.delegate = self
+        appDelegate.locationManager.startUpdatingLocation()
+        lastUITextFieldSelected = sender
+        self.present(autoCompleteController, animated: true, completion: nil)
+    }
+    /**
+     This function is the action handler for the start location text field
      */
     @IBAction func openSearchAddressStartPlace(_ sender: UITextField) {
-        let autoCompleteController = GMSAutocompleteViewController()
-        autoCompleteController.delegate = self
-        appDelegate.locationManager.startUpdatingLocation()
-        self.present(autoCompleteController, animated: true, completion: nil)
+        handleAutocomplete(sender: sender)
     }
 
+    /**
+     This function is the action handler for the end location text field
+     */
     @IBAction func openSearchAddressEndPlace(_ sender: UITextField) {
-        let autoCompleteController = GMSAutocompleteViewController()
-        autoCompleteController.delegate = self
-        appDelegate.locationManager.startUpdatingLocation()
-        self.present(autoCompleteController, animated: true, completion: nil)
+        handleAutocomplete(sender: sender)
     }
-    
-    
     
     // --------------------
     //MARK: UITextFieldDelegate

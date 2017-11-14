@@ -55,13 +55,15 @@ class MapViewController: UIViewController {
         
         
         
-        // create a marker to show where you at
+        // Example of creating a marker of where you are:
         
-        let marker = GMSMarker()
-        marker.position = defaultLocation.coordinate
-        marker.title = "Cupertino"
-        marker.snippet = "California"
-        marker.map = mapView
+        /*
+         let marker = GMSMarker()
+         marker.position = defaultLocation.coordinate
+         marker.title = "Cupertino"
+         marker.snippet = "California"
+         marker.map = mapView
+        */
         
         
         //Add the map to the view
