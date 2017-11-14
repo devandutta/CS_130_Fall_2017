@@ -115,11 +115,12 @@
                     <navigationItem key="navigationItem" title="Enter Time and Location Info" id="B7I-5n-QYA">
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="bjA-dQ-Tdc">
                             <connections>
-                                <segue destination="gPU-Cu-KDS" kind="unwind" unwindAction="unwindToMapViewWithSender:" id="Yzx-Yj-Ukd"/>
+                                <segue destination="gPU-Cu-KDS" kind="unwind" unwindAction="unwindToMapViewWithSender:" id="Q0O-XU-zIU"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="doneButton" destination="bjA-dQ-Tdc" id="6Dh-m5-QQa"/>
                         <outlet property="endLocation" destination="VgT-ss-GU2" id="Foz-JB-hho"/>
                         <outlet property="endTime" destination="HDA-3a-vvK" id="iNU-Be-WM1"/>
                         <outlet property="startLocation" destination="mXK-F5-fMv" id="yYJ-Az-Eir"/>

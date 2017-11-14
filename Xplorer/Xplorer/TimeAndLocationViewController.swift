@@ -14,12 +14,18 @@ class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSA
     
     //MARK: Properties
     var lastUITextFieldSelected: UITextField?
+    var startPlace: GMSPlace?
+    var endPlace: GMSPlace?
+    var startTimeInfo: NSDate?
+    var endTimeInfo: NSDate?
     
     // Outlets
     @IBOutlet weak var startLocation: UITextField!
     @IBOutlet weak var endLocation: UITextField!
     @IBOutlet weak var startTime: UIDatePicker!
     @IBOutlet weak var endTime: UIDatePicker!
+    @IBOutlet weak var doneButton: UIBarButtonItem!
+    
     // Constants and variables
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
@@ -29,6 +35,7 @@ class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSA
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        doneButton.isEnabled = false
         startLocation.delegate = self
         endLocation.delegate = self
     }
@@ -48,7 +55,18 @@ class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSA
      */
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
         lastUITextFieldSelected?.text = "\(place.name), \(place.formattedAddress!)"
+        if (lastUITextFieldSelected === startLocation) {
+            startPlace = place
+        }
+        else {
+            endPlace = place
+        }
         lastUITextFieldSelected = nil
+        
+        if((startPlace != nil) && (endPlace != nil)) {
+            doneButton.isEnabled = true
+        }
+        
         self.dismiss(animated: true, completion: nil) // dismiss after selecting a place
     }
     
@@ -102,15 +120,21 @@ class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSA
         
     }
     
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        super.prepare(for: segue, sender: sender)
+        //Note that the 3 equal signs do not indicate a typo.  They are the identity operator.
+        //Specifically, they are checking if the object referenced by sender is the same as doneButton
+        guard let button = sender as? UIBarButtonItem, button === doneButton else {
+            print("The done button was not pressed")
+            return
+        }
+        
+        startTimeInfo = startTime.date as NSDate
+        endTimeInfo = endTime.date as NSDate
     }
-    */
 
 }
 

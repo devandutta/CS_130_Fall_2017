@@ -53,19 +53,6 @@ class MapViewController: UIViewController {
         // reset location to my location when the button is pressed
         mapView.settings.myLocationButton = true
         
-        
-        
-        // Example of creating a marker of where you are:
-        
-        /*
-         let marker = GMSMarker()
-         marker.position = defaultLocation.coordinate
-         marker.title = "Cupertino"
-         marker.snippet = "California"
-         marker.map = mapView
-        */
-        
-        
         //Add the map to the view
         view.addSubview(mapView)
     }
@@ -80,12 +67,41 @@ class MapViewController: UIViewController {
     //This method lets you prepare the view controller before it's presented
     override func prepare (for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
-        //TODO: THIS IS WHERE WE WILL WANT TO STORE THE TIMES AND LOCATIONS FROM THE TIME AND LOCATION VIEW
     }
     
     //MARK: Actions
     @IBAction func unwindToMapView(sender: UIStoryboardSegue) {
-        
+        if let sourceViewController = sender.source as? TimeAndLocationViewController {
+            //Get the start place and the end place
+            let startPlace = sourceViewController.startPlace
+            let endPlace = sourceViewController.endPlace
+            
+            //Get the start time and the end time
+            let startTime = sourceViewController.startTimeInfo
+            let endTime = sourceViewController.endTimeInfo
+            
+            print("startPlace: \(startPlace!.name), \(startPlace!.formattedAddress!)")
+            print("endPlace: \(endPlace!.name), \(endPlace!.formattedAddress!)")
+            
+            print("startTime: \(startTime!)")
+            print("endTime: \(endTime!)")
+            
+            let startMarker = GMSMarker()
+            startMarker.position = (startPlace?.coordinate)!
+            startMarker.title = startPlace?.name
+            startMarker.snippet = startPlace?.formattedAddress
+            startMarker.icon = GMSMarker.markerImage(with: .blue)
+            startMarker.map = mapView
+            
+            let endMarker = GMSMarker()
+            endMarker.position = (endPlace?.coordinate)!
+            endMarker.title = endPlace?.name
+            endMarker.snippet = endPlace?.formattedAddress
+            endMarker.map = mapView
+            
+            //TODO: This will have to be much more dynamic
+            mapView.animate(toZoom: 11)
+        }
     }
 
 }
