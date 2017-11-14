@@ -17,10 +17,9 @@ class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSA
     
     // Outlets
     @IBOutlet weak var startLocation: UITextField!
-    @IBOutlet weak var startTime: UITextField!
     @IBOutlet weak var endLocation: UITextField!
-    @IBOutlet weak var endTime: UITextField!
-    
+    @IBOutlet weak var startTime: UIDatePicker!
+    @IBOutlet weak var endTime: UIDatePicker!
     // Constants and variables
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
@@ -31,9 +30,7 @@ class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSA
         super.viewDidLoad()
 
         startLocation.delegate = self
-        startTime.delegate = self
         endLocation.delegate = self
-        endTime.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -75,6 +72,9 @@ class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSA
         lastUITextFieldSelected = sender
         self.present(autoCompleteController, animated: true, completion: nil)
     }
+    
+    //MARK: Actions
+    
     /**
      This function is the action handler for the start location text field
      */
