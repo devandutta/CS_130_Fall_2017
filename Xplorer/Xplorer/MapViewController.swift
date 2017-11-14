@@ -86,22 +86,29 @@ class MapViewController: UIViewController {
             print("startTime: \(startTime!)")
             print("endTime: \(endTime!)")
             
-            let startMarker = GMSMarker()
-            startMarker.position = (startPlace?.coordinate)!
-            startMarker.title = startPlace?.name
-            startMarker.snippet = startPlace?.formattedAddress
-            startMarker.icon = GMSMarker.markerImage(with: .blue)
-            startMarker.map = mapView
-            
-            let endMarker = GMSMarker()
-            endMarker.position = (endPlace?.coordinate)!
-            endMarker.title = endPlace?.name
-            endMarker.snippet = endPlace?.formattedAddress
-            endMarker.map = mapView
+            //Put start and end markers on map
+            addMarker(place: startPlace, type: "start")
+            addMarker(place: endPlace, type: "end")
             
             //TODO: This will have to be much more dynamic
             mapView.animate(toZoom: 11)
         }
+    }
+    
+    func addMarker(place: GMSPlace!, type: String) {
+        let marker = GMSMarker()
+        marker.position = (place?.coordinate)!
+        marker.title = place?.name
+        marker.snippet = place?.formattedAddress
+        if(type == "start") {
+            marker.icon = GMSMarker.markerImage(with: .blue)
+        }
+        
+        else if(type == "end") {
+            marker.icon = GMSMarker.markerImage(with: .red)
+        }
+        
+        marker.map = mapView
     }
 
 }
