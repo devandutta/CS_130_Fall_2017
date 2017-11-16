@@ -176,15 +176,20 @@ class MapViewController: UIViewController {
 
 //MARK: Delegates
 
-// Delegates to handle events for the location manager.
-
 /**
  The MapViewController must implement the CLLocationManagerDelegate protocol, which specifies the methods used to receive events from locationManager.
  
  */
 extension MapViewController: CLLocationManagerDelegate {
     
-    // Handle incoming location events.
+    /*
+     Tells the delegate that new location data is available.
+     
+     - Parameter manager:   The location manager object that generated the update event.
+     - Parameter locations: An array of CLLocation objects containing the location data. This array always contains at least one object representing the current location. If updates were deferred or if multiple locations arrived before they could be delivered, the array may contain additional entries. The objects in the array are organized in the order in which they occurred. Therefore, the most recent location update is at the end of the array.
+     
+     - Discussion: Implementation of this method is optional but recommended.
+     */
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location: CLLocation = locations.last!
         print("Location: \(location)")
