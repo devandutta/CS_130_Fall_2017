@@ -41,6 +41,7 @@ import GooglePlaces
 class MapViewController: UIViewController {
     //MARK: Properties
 
+    ///a CLLocation that specifies the current location.
     var currentLocation: CLLocation?
     var mapView: GMSMapView!
     var placesClient: GMSPlacesClient!
