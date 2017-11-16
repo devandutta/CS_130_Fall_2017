@@ -9,46 +9,100 @@
 import UIKit
 import GoogleMaps
 import GooglePlaces
-
+/**
+ The AppDelegate is responsible for all main operation of the app.  It is a Singleton instance that maintains state for the whole app.
+ 
+ It extends UIResponder and implements UIApplicationDelegate.
+ 
+ Note about properties:
+ *  `window` is a UIWindow that specifies the window space of the application
+ *  `locationManager` is necessary to start and stop the delivery of location-related events to the app
+ */
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
     //MARK: Properties
     
     var window: UIWindow?
     // location manager is a singleton and is shared via app delegate
     var locationManager = CLLocationManager()
-
+    
     //MARK: Methods
     
+    /**
+     This method is used for when the application starts up.
+     
+     We provide the GMSServices and GMSPlacesClientAPI keys here.
+     
+     - Parameter application: The centralized point of control and coordination for iOS apps.  There is one instance of a UIApplication for every app.
+     - Parameter launchOptions: Any specified launch options.
+     - Returns: true
+     */
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         GMSServices.provideAPIKey("AIzaSyByB7OVg04q9jIAawE1i4IN0Il8I3Na1pU")
         GMSPlacesClient.provideAPIKey("AIzaSyByB7OVg04q9jIAawE1i4IN0Il8I3Na1pU")
         return true
     }
-
+    
+    /**
+     This method is sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
+     
+     This method can be used to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks.
+     
+     - Parameter application: The centralized point of control and coordination for iOS apps.  There is one instance of a UIApplication for every app.
+     
+     - Returns: void
+     */
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
     }
-
+    
+    /**
+     This method is used to release shared resources, save user data, invalidate timers, and store enough application state information to restore the application to its current state in case it is terminated later.
+     
+     If the app supports background execution, this method is called instead of `applicationWillTerminate()` when the user quits.
+     
+     - Parameter application: The centralized point of control and coordination for iOS apps.  There is one instance of a UIApplication for every app.
+     
+      - Returns: void
+     */
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }
-
+    
+    /**
+     This method is called as part of the transition from the background to the active state; here we can undo many of the changes made on entering the background.
+     - Parameter application: The centralized point of control and coordination for iOS apps.  There is one instance of a UIApplication for every app.
+     
+      - Returns: void
+     */
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
     }
-
+    
+    /**
+     This method is used to restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+     - Parameter application: The centralized point of control and coordination for iOS apps.  There is one instance of a UIApplication for every app.
+     
+      - Returns: void
+     */
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
-
+    
+    /**
+     Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+     
+     - Parameter application: The centralized point of control and coordination for iOS apps.  There is one instance of a UIApplication for every app.
+     
+      - Returns: void
+     */
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
+    
 }
 

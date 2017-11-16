@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Classes  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a title="Classes  Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="index.html">Xplorer Docs</a> (47% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="index.html">Xplorer Reference</a>
+        <img id="carat" src="img/carat.png" />
+        Classes  Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/AppDelegate.html">AppDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/MapViewController.html">MapViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/TimeAndLocationViewController.html">TimeAndLocationViewController</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>Classes</h1>
+            <p>The following classes are available globally.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@Xplorer@objc(cs)TimeAndLocationViewController"></a>
+                    <a name="//apple_ref/swift/Class/TimeAndLocationViewController" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@Xplorer@objc(cs)TimeAndLocationViewController">TimeAndLocationViewController</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This class is used as the Time and Location Input Controller for the user.
+It is in this view that the user is able to select a start location, start time, end location, and end time.</p>
+
+<p>This class extends UIViewController and implements UITextFieldDelegate and GMSAutocompleteViewControllerDelegate.</p>
+
+<p>Properties:</p>
+
+<ul>
+<li><code>lastUITextFieldSelected</code>:      This property represents the last text field that the user selected and indicates to the view whether to place the user&rsquo;s searched location in the start or end text field.</li>
+<li><code>startPlace</code>:                   This property represents the GMSPlace that is the start.</li>
+<li><code>endPlace</code>:                     This property represents the GMSPlace that is the end.</li>
+<li><code>startTimeInfo</code>:                This property represents the time-zone agnostic start time from a UIDatePicker.</li>
+<li><code>endTimeInfo</code>:                  This property represents the time-zone agnostic end time from a UIDatePicker.</li>
+</ul>
+
+<p>Outlets:</p>
+
+<ul>
+<li>startLocation:  UITextField that holds the start location.</li>
+<li>endLocation:    UITextField that holds the end location.</li>
+<li>startTime:      UIDatePicker that holds the start time.</li>
+<li>endTime:        UIDatePicker that holds the end time.</li>
+<li>doneButton:     UIBarButtonItem that sits to the right in the navigation bar and only activates once the user has selected valid start and end locations.</li>
+</ul>
+
+<p>Constants:</p>
+
+<ul>
+<li>appDelegate:    This is a reference to the application&rsquo;s AppDelegate object.</li>
+</ul>
+
+                        <a href="Classes/TimeAndLocationViewController.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">class</span> <span class="kt">TimeAndLocationViewController</span><span class="p">:</span> <span class="kt">UIViewController</span><span class="p">,</span> <span class="kt">UITextFieldDelegate</span><span class="p">,</span> <span class="kt">GMSAutocompleteViewControllerDelegate</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@Xplorer@objc(cs)MapViewController"></a>
+                    <a name="//apple_ref/swift/Class/MapViewController" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@Xplorer@objc(cs)MapViewController">MapViewController</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The MapViewController is the main view controller for our app.  It prominently displays the map and is used to show the user&rsquo;s selected itinerary.</p>
+
+<p>MapViewController extends UIViewController.</p>
+
+<p>Properties:</p>
+
+<ul>
+<li><code>currentLocation</code>:      a CLLocation that specifies the current location.</li>
+<li><code>mapView</code>:              the main GMS mapview.  This is the view that is displayed full screen in this controller.</li>
+<li><code>placesClient</code>:         a GMSPlacesClient variable so that we can make use of the Google Places API.</li>
+<li><code>zoomLevel</code>:            indicates the zoom level of the map.</li>
+<li><code>appDelegate</code>:          a reference back to the app&rsquo;s AppDelegate object.</li>
+<li><code>defaultLocation</code>:      if the app is running in simulator mode, or if the user has not accepted location preferences, the map begins at Apple&rsquo;s headquarters.</li>
+</ul>
+
+<p>Navigation:</p>
+
+<ul>
+<li>override func prepare (for segue: UIStoryboardSegue, sender: Any?): This method lets you prepare the view controller before it&rsquo;s presented</li>
+</ul>
+
+<p>Actions:</p>
+
+<ul>
+<li>@IBAction func unwindToMapView(sender: UIStoryboardSegue): This method allows the TimeAndLocationViewController to unwind to this view controller.</li>
+</ul>
+
+<p>Additional methods:
+addMarker(place: GMSPlace!, type: String): This method adds a marker to the map.</p>
+
+<p>Delegates:</p>
+
+<ul>
+<li>CLLocationManagerDelegate:  The MapViewController has to implement the CLLocationManagerDelegate.</li>
+</ul>
+
+                        <a href="Classes/MapViewController.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">class</span> <span class="kt">MapViewController</span><span class="p">:</span> <span class="kt">UIViewController</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@Xplorer@objc(cs)AppDelegate"></a>
+                    <a name="//apple_ref/swift/Class/AppDelegate" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@Xplorer@objc(cs)AppDelegate">AppDelegate</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The AppDelegate is responsible for all main operation of the app.  It is a Singleton instance that maintains state for the whole app.</p>
+
+<p>It extends UIResponder and implements UIApplicationDelegate.</p>
+
+<p>Note about properties:</p>
+
+<ul>
+<li><code>window</code> is a UIWindow that specifies the window space of the application</li>
+<li><code>locationManager</code> is necessary to start and stop the delivery of location-related events to the app</li>
+</ul>
+
+                        <a href="Classes/AppDelegate.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">class</span> <span class="kt">AppDelegate</span><span class="p">:</span> <span class="kt">UIResponder</span><span class="p">,</span> <span class="kt">UIApplicationDelegate</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2017 <a class="link" href="https://github.com/devandutta/CS_130_Fall_2017" target="_blank" rel="external">Devan Dutta</a>. All rights reserved. (Last updated: 2017-11-16)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
