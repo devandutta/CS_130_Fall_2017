@@ -88,6 +88,25 @@ The **Xplorer.xcodeproj** folder contains the main runnable part of the code, wh
 
 **XplorerTests** contains the test suites and unit tests we have created for our code. The **Assets** folder contains the images for our application which will end up being used in the ‘Interests’ section.
 
+# Testing
+### Overview
+For our project, we used Xcode’s testing framework named XCTest. XCTest is very similar to the JUnit testing framework. Currently, we have a single suite of tests containing ten test cases. Each test case can be run independently or the entire suite can be run at once. Before each test is run, the functions setUp() and tearDown() are run before and after the test respectively. These functions contain code regarding allocation and deallocation of resources required by the test cases.
+Following is the link to the folder containing the test cases: https://github.com/devandutta/CS_130_Fall_2017/tree/master/Xplorer/XplorerTests
+
+### Testing Scenarios
+Currently, our application offers functionality to select the start and end location along with the start and end times. We focus our testing mainly on one function which is responsible for fetching and sending the user input data to the Google Maps API. The Maps API returns the start and end locations in GMSPlace objects, which are then sent to the MapViewController tomark the start and end locations on the map. In the future, we will add more extensive testing to test the route planning functionality.
+
+Following are our 4 testing scenarios which cover general functionality and potential failures:
+
+1. Verify start location is set when user inputs start location in GMSAutocompleteViewController. The GMSAutocompleteViewController is offered by the Google Places API. We need to verify that our own controller (TimeAndLocationViewController) sets the start location correctly after the user inputs it, and does not cause any unwanted side effects. The expected outcome is the startLocation object being non-nil (“nil” is Swift and Objective-C’s “null), the end location being nil, and the “Done” button being disabled since the user has not input the end location yet. Violation of any of these conditions leads to an assertionError and build failure.
+
+2. Verify end location is set when user inputs end location in GMSAutocompleteViewController. We need to verify that our own controller (TimeAndLocationViewController) sets the end location correctly after the user inputs it, and does not cause any unwanted side effects. The expected outcome is the endLocation being non-nil, the start location being nil, and the “Done” button being disabled since the user has not input the start location yet. Violation of any of these conditions leads to an assertionError and build failure.
+
+3. Verify user is able to click the “Done” button and proceed to the routing screen if and only if both the start and end locations have been specified by the user. The expected outcome is the “Done” button being enabled. If it is not, the test fails.
+
+4. Verify all view controllers and their views are non-nil after being instantiated. This tests all the view loading code of our view controllers by ensuring everything is properly instantiated. We also check that our UITextField objects return true when the user presses the “enter” key. The expected outcome is the view controllers and view being non-nil.  This outcome is confirm by using the AssertIsNotNil() function. 
+
+These testing scenarios allow us to ensure that we are properly sanitizing all the user inputs before proceeding to the routing, along with correct general functionality of the application.
 
 # Capability
 **Shashank Khanna** has iOS development and System design. He has developed several iOS applications in Objective-C, one of which was chosen for the app store with over 200 downloads across three countries and another was responsible for winning the grand prize for HackGT. He has system design experience, through designing high-traffic backend web features for large e-commerce companies. His estimated role in the team would be to do class design and do the Objective-C implementation of the iOS application. He would be developing the application layer that will interact with the API, display the required data and contain the business logic. For Part A, Shashank contributed to the feature description, researched the Google Distance Matrix API, and estimated its feasibility as to displaying different route types within the application. 
