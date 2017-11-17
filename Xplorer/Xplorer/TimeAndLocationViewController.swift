@@ -190,15 +190,15 @@ class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSA
     // --------------------
     
     /**
- This method is one of the methods that should be implemented for UITextFieldDelegate.
- 
- It specifies what to do when the user presses "Enter".
- 
- - Parameter textField: The UITextField whose return button was pressed.
- 
- - Returns: true
- 
- */
+     This method is one of the methods that should be implemented for UITextFieldDelegate.
+     
+     It specifies what to do when the user presses "Enter".
+     
+     - Parameter textField: The UITextField whose return button was pressed.
+     
+     - Returns: true
+     
+     */
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         //Hide the keyboard
         textField.resignFirstResponder()
