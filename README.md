@@ -80,6 +80,15 @@ To successfully develop and design this app, it is necessary to keep common pitf
 **Explanation of Class Diagram:**
 The app will be run by UIViewControllers, derived from UIViewController from the UIKit in iOS.  UIResponder and UIApplicationDelegate have been included because AppDelegate needs to implement and extend them, respectively.  UIViewController has been included because every ViewController will have to extend it.  All object types that begin with “GMS” indicate Google Mapping Services objects from the Google Maps API, as well as the Google Places API.  All other object types that begin with “UI” indicate views that were used from Apple’s UIKit for iOS.
 
+# Directory Explanation
+
+The project is an XCode Workspace. This is done so that it can incorporate the Google Map Services dependencies needed for our application. We can thus add our application code as one project and the Pods containing the Google APIs as another project. The **Pods** file contains the two dependencies we have used so far, namely Google Maps and Google Places. The GMS code is a combination of Swift and Objective-C classes.
+
+The **Xplorer.xcodeproj** folder contains the main runnable part of the code, which calls upon the swift classes defined in the **Xplorer** folder (the source code). We have two main storyboards in the **Base.lproj** folder which define the high-level execution of our application. We also have auto-generated documentation in the Apple Doc format that was created by XCode in the Xplorer folder under **Documentation**.
+
+**XplorerTests** contains the test suites and unit tests we have created for our code. The **Assets** folder contains the images for our application which will end up being used in the ‘Interests’ section.
+
+
 # Capability
 **Shashank Khanna** has iOS development and System design. He has developed several iOS applications in Objective-C, one of which was chosen for the app store with over 200 downloads across three countries and another was responsible for winning the grand prize for HackGT. He has system design experience, through designing high-traffic backend web features for large e-commerce companies. His estimated role in the team would be to do class design and do the Objective-C implementation of the iOS application. He would be developing the application layer that will interact with the API, display the required data and contain the business logic. For Part A, Shashank contributed to the feature description, researched the Google Distance Matrix API, and estimated its feasibility as to displaying different route types within the application. 
 
