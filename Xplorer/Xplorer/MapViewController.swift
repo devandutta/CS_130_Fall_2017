@@ -128,17 +128,17 @@ class MapViewController: UIViewController {
      */
     @IBAction func unwindToMapView(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? TimeAndLocationViewController {
-            //Before getting the start and end place, remove any previous markers that were on the map
+            // Before getting the start and end place, remove any previous markers that were on the map
             for marker in markers {
                 marker.map = nil
             }
             markers.removeAll()
             
-            //Get the start place and the end place
+            // Get the start place and the end place
             let startPlace = sourceViewController.startPlace
             let endPlace = sourceViewController.endPlace
             
-            //Get the start time and the end time
+            // Get the start time and the end time
             let startTime = sourceViewController.startTimeInfo
             let endTime = sourceViewController.endTimeInfo
             
