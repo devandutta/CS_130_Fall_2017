@@ -145,9 +145,17 @@ class MapViewController: UIViewController {
             addMarker(place: startPlace, type: "start")
             addMarker(place: endPlace, type: "end")
             
-            mapView.animate(toLocation: CLLocationCoordinate2D(latitude: (startPlace?.coordinate.latitude)!, longitude: (startPlace?.coordinate.longitude)!))
-            //TODO: This will have to be much more dynamic
-            mapView.animate(toZoom: 11)
+            //Modify the map bounds to include both markers
+            //TODO: In the future, we can add the user's selected POIs to the MapView in the same way
+            
+            let path = GMSMutablePath()
+            path.add((startPlace?.coordinate)!)
+            path.add((endPlace?.coordinate)!)
+            
+            let bounds = GMSCoordinateBounds.init(path: path)
+            let update = GMSCameraUpdate.fit(bounds, withPadding: 60)
+            
+            mapView.animate(with: update)
         }
     }
     
