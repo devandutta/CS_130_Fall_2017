@@ -244,14 +244,16 @@ class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSA
         endTimeInfo = endTime.date as NSDate
         
         //TODO: FIX THIS!  It is buggy.  The alert disappears almost instantaneously.
-        if (endTime.date <= startTime.date) {
-            let timeAlert = UIAlertController(title: "Time Error", message: "The end time must be greater than the start time.", preferredStyle: .alert)
-            timeAlert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: {
-                _ in NSLog("The \"OK\" alert occurred.")
-            }))
-            
-            self.present(timeAlert, animated: true, completion: nil)
-        }
+        /*
+         if (endTime.date <= startTime.date) {
+         let timeAlert = UIAlertController(title: "Time Error", message: "The end time must be greater than the start time.", preferredStyle: .alert)
+         timeAlert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: {
+         _ in NSLog("The \"OK\" alert occurred.")
+         }))
+         
+         self.present(timeAlert, animated: true, completion: nil)
+         }
+         */
     }
 
 }
