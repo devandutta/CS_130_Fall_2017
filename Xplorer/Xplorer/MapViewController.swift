@@ -47,6 +47,7 @@ class MapViewController: UIViewController {
     var placesClient: GMSPlacesClient!
     var zoomLevel: Float = 15.0
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    var markers: [GMSMarker] = []
 
     //In case the location preferences have not been set, this is the location of Apple
     let defaultLocation = CLLocation(latitude: 37.33182, longitude: -122.03118)
@@ -127,6 +128,12 @@ class MapViewController: UIViewController {
      */
     @IBAction func unwindToMapView(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? TimeAndLocationViewController {
+            //Before getting the start and end place, remove any previous markers that were on the map
+            for marker in markers {
+                marker.map = nil
+            }
+            markers.removeAll()
+            
             //Get the start place and the end place
             let startPlace = sourceViewController.startPlace
             let endPlace = sourceViewController.endPlace
@@ -179,7 +186,9 @@ class MapViewController: UIViewController {
             marker.icon = GMSMarker.markerImage(with: .red)
         }
         
+        marker.appearAnimation = .pop
         marker.map = mapView
+        markers.append(marker)
     }
 
 }
