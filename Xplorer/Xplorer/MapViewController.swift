@@ -145,6 +145,7 @@ class MapViewController: UIViewController {
             addMarker(place: startPlace, type: "start")
             addMarker(place: endPlace, type: "end")
             
+            mapView.animate(toLocation: CLLocationCoordinate2D(latitude: (startPlace?.coordinate.latitude)!, longitude: (startPlace?.coordinate.longitude)!))
             //TODO: This will have to be much more dynamic
             mapView.animate(toZoom: 11)
         }
