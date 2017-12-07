@@ -42,6 +42,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         GMSServices.provideAPIKey("AIzaSyByB7OVg04q9jIAawE1i4IN0Il8I3Na1pU")
         GMSPlacesClient.provideAPIKey("AIzaSyByB7OVg04q9jIAawE1i4IN0Il8I3Na1pU")
+       
+        // The first time a user opens the app, the user must see an onboarding screen
+        // asking about the user's interests
+        // After that, they should be re-directed to the home screen
+        
+        self.window = UIWindow(frame:UIScreen.main.bounds)
+        let storyboard = UIStoryboard(name:"Main", bundle:nil)
+        var vc : UIViewController
+        if (UserDefaults.standard.value(forKey: "name") as? String) == nil {
+            // show the onboarding screen
+            vc = storyboard.instantiateViewController(withIdentifier: "StartViewController")
+        } else {
+            vc = storyboard.instantiateInitialViewController()!
+        }
+        
+        self.window?.rootViewController = vc
+        self.window?.makeKeyAndVisible()
         return true
     }
     

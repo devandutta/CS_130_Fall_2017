@@ -16,6 +16,8 @@
 		0789C7701FB7073A00D73FAF /* XplorerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0789C76F1FB7073A00D73FAF /* XplorerTests.swift */; };
 		0789C77D1FB71BF000D73FAF /* TimeAndLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0789C77C1FB71BF000D73FAF /* TimeAndLocationViewController.swift */; };
 		68775FCEBB6C25DFC2115392 /* libPods-XplorerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 694A0FDC1C44BC171E343917 /* libPods-XplorerTests.a */; };
+		98F4D38A1FD92BAD00BA583B /* grey.png in Resources */ = {isa = PBXBuildFile; fileRef = 98F4D3891FD92BAD00BA583B /* grey.png */; };
+		98F4D38C1FD93F2400BA583B /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F4D38B1FD93F2400BA583B /* StartViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +46,8 @@
 		3D6C9CF8413D3E83FBB24A04 /* Pods-Xplorer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Xplorer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Xplorer/Pods-Xplorer.debug.xcconfig"; sourceTree = "<group>"; };
 		5EF35BE148FBB386D2E34BE3 /* Pods-XplorerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XplorerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-XplorerTests/Pods-XplorerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		694A0FDC1C44BC171E343917 /* libPods-XplorerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-XplorerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		98F4D3891FD92BAD00BA583B /* grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grey.png; sourceTree = "<group>"; };
+		98F4D38B1FD93F2400BA583B /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		CBE0DCA3113C8C96B5116D3B /* Pods-Xplorer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Xplorer.release.xcconfig"; path = "Pods/Target Support Files/Pods-Xplorer/Pods-Xplorer.release.xcconfig"; sourceTree = "<group>"; };
 		E173A09AED953FFAF311A095 /* libPods-Xplorer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Xplorer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -95,7 +99,9 @@
 				0789C75C1FB7073900D73FAF /* MapViewController.swift */,
 				0789C77C1FB71BF000D73FAF /* TimeAndLocationViewController.swift */,
 				0789C75E1FB7073900D73FAF /* Main.storyboard */,
+				98F4D38B1FD93F2400BA583B /* StartViewController.swift */,
 				0789C7611FB7073900D73FAF /* Assets.xcassets */,
+				98F4D3891FD92BAD00BA583B /* grey.png */,
 				0789C7631FB7073900D73FAF /* LaunchScreen.storyboard */,
 				0789C7661FB7073900D73FAF /* Info.plist */,
 			);
@@ -222,6 +228,7 @@
 			files = (
 				0789C7651FB7073900D73FAF /* LaunchScreen.storyboard in Resources */,
 				0789C7621FB7073900D73FAF /* Assets.xcassets in Resources */,
+				98F4D38A1FD92BAD00BA583B /* grey.png in Resources */,
 				0789C7601FB7073900D73FAF /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -348,6 +355,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0789C77D1FB71BF000D73FAF /* TimeAndLocationViewController.swift in Sources */,
+				98F4D38C1FD93F2400BA583B /* StartViewController.swift in Sources */,
 				0789C75D1FB7073900D73FAF /* MapViewController.swift in Sources */,
 				0789C75B1FB7073900D73FAF /* AppDelegate.swift in Sources */,
 			);
