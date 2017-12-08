@@ -50,10 +50,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = UIWindow(frame:UIScreen.main.bounds)
         let storyboard = UIStoryboard(name:"Main", bundle:nil)
         var vc : UIViewController
-        if (UserDefaults.standard.value(forKey: "name") as? String) == nil {
+        if (UserDefaults.standard.value(forKey: "interests") as? [String]) == nil {
             // show the onboarding screen
             vc = storyboard.instantiateViewController(withIdentifier: "StartViewController")
         } else {
+            print(UserDefaults.standard.value(forKey: "interests")!)
             vc = storyboard.instantiateInitialViewController()!
         }
         

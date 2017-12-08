@@ -177,7 +177,7 @@
         <!--InterestViewController-->
         <scene sceneID="c7K-8s-SJw">
             <objects>
-                <viewController title="InterestViewController" id="gvu-r8-agj" sceneMemberID="viewController">
+                <viewController title="InterestViewController" id="gvu-r8-agj" customClass="InterestViewController" customModule="Xplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="xiG-fz-DS4">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -207,39 +207,69 @@
                                 <rect key="frame" x="16" y="209" width="147" height="130"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" title="Entertainment">
+                                <state key="normal" title="Entertainment" backgroundImage="dark_grey_rect.png">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
-                                <state key="selected" backgroundImage="grey.png"/>
+                                <state key="selected" backgroundImage="light_grey_rect.png"/>
+                                <connections>
+                                    <action selector="select_Entertainment:" destination="gvu-r8-agj" eventType="touchUpInside" id="9Uy-8H-kgt"/>
+                                </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fUE-Vm-bbE">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fUE-Vm-bbE">
                                 <rect key="frame" x="212" y="209" width="147" height="130"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" title="Gardens">
+                                <state key="normal" title="Gardens" backgroundImage="dark_grey_rect.png">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <state key="selected" backgroundImage="light_grey_rect.png"/>
+                                <connections>
+                                    <action selector="selectGardens:" destination="gvu-r8-agj" eventType="touchUpInside" id="3q0-h2-lg4"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="053-5o-bcC">
                                 <rect key="frame" x="16" y="403" width="147" height="130"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" title="History">
+                                <state key="normal" title="History" backgroundImage="dark_grey_rect.png">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <state key="selected" backgroundImage="light_grey_rect.png"/>
+                                <connections>
+                                    <action selector="selectHistory:" destination="gvu-r8-agj" eventType="touchUpInside" id="ZPN-q7-wbv"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0nQ-RJ-izi">
                                 <rect key="frame" x="212" y="403" width="147" height="130"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" title="Food">
+                                <state key="normal" title="Food" backgroundImage="dark_grey_rect.png">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <state key="selected" backgroundImage="light_grey_rect.png"/>
+                                <connections>
+                                    <action selector="selectFood:" destination="gvu-r8-agj" eventType="touchUpInside" id="8en-n9-Sb2"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fcl-b5-tHY">
+                                <rect key="frame" x="127" y="591" width="141" height="39"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.89019607840000003" green="0.89019607840000003" blue="0.89019607840000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="CONTINUE">
+                                    <color key="titleColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                </state>
+                                <connections>
+                                    <action selector="continuePressed:" destination="gvu-r8-agj" eventType="touchUpInside" id="hDI-8C-V8k"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="KtS-MV-hJ5"/>
                     </view>
+                    <connections>
+                        <outlet property="kasf" destination="W28-Uh-ptb" id="ffp-0V-CZN"/>
+                        <segue destination="Ygi-IG-i3i" kind="show" identifier="toMainSegue" id="Nqj-Sb-QC1"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LbT-CN-v3q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -283,6 +313,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="grey.png" width="300" height="302"/>
+        <image name="dark_grey_rect.png" width="1150" height="1075"/>
+        <image name="light_grey_rect.png" width="1150" height="1075"/>
     </resources>
 </document>
