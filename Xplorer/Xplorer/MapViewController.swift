@@ -61,9 +61,18 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         let position = result.coordinate.coordinate
         for marker:GMSMarker in markers {
             if ((position.latitude == marker.position.latitude) && (position.longitude == marker.position.longitude)) {
-                marker.map = nil
-                markers.remove(at: indexPath.row)
-                return
+                print(marker)
+                print("Number of items in markers before removal: \(markers.count)")
+                
+                let index = markers.index(where: { (item) -> Bool in
+                    (item.position.latitude == position.latitude) && (item.position.longitude == position.longitude)
+                })
+                if(index! > 0) {
+                    marker.map = nil
+                    markers.remove(at: index!)
+                    print("Number of items in markers after removal: \(markers.count)")
+                    return
+                }
             }
         }
         
@@ -395,7 +404,48 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         
         print(url)
         
-        //TODO: Finish adding path to map
+        let formattedURL = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        print(formattedURL)
+        let urlQuery = URL(string: formattedURL!)!
+        
+        //Query Google Directions API to get polyline back:
+        var polylinePoints = ""
+        let group = DispatchGroup()
+        group.enter()
+        DispatchQueue.main.async {
+            let task = session.dataTask(with: urlQuery) {data, response, error in
+                do {
+                    if error != nil {
+                        print("error: \(error?.localizedDescription)")
+                        return
+                    }
+                    
+                    print("Is valid JSON: \(data)")
+
+                    
+                    let json = (try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary)!
+                    let routes = json["routes"] as! NSArray
+                    let route1 = routes[0] as! NSDictionary
+                    let overviewPolyline = route1["overview_polyline"] as? NSDictionary
+                    polylinePoints = overviewPolyline!["points"] as! String
+                    
+                    group.leave()
+                    return
+                } catch {
+                    print(error)
+                    group.leave()
+                    return
+                }
+            }
+            task.resume()
+        }
+        
+        group.notify(queue: .main) {
+            print("Drawing polyline now:")
+            let path = GMSMutablePath(fromEncodedPath: polylinePoints)
+            let polyline = GMSPolyline(path: path)
+            polyline.map = self.mapView
+        }
     }
 }
 

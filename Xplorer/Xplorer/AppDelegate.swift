@@ -46,7 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         GMSServices.provideAPIKey(GMSMapServicesKey)
-        GMSPlacesClient.provideAPIKey(GMSPlacesServicesKey)
+        GMSPlacesClient.provideAPIKey(GMSPlacesServicesKey_Alternate)
        
         // The first time a user opens the app, the user must see an onboarding screen
         // asking about the user's interests
