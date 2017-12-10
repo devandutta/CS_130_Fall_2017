@@ -444,7 +444,13 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             print("Drawing polyline now:")
             let path = GMSMutablePath(fromEncodedPath: polylinePoints)
             let polyline = GMSPolyline(path: path)
+            polyline.strokeWidth = 3
+            polyline.strokeColor = UIColor.blue
             polyline.map = self.mapView
+            
+            let bounds = GMSCoordinateBounds.init(path: path!)
+            let update = GMSCameraUpdate.fit(bounds, withPadding: 90)
+            self.mapView.animate(with: update)
         }
     }
 }
