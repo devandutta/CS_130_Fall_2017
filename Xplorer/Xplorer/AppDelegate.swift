@@ -26,6 +26,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     // location manager is a singleton and is shared via app delegate
     var locationManager = CLLocationManager()
+    var GMSMapServicesKey = "AIzaSyByB7OVg04q9jIAawE1i4IN0Il8I3Na1pU"
+    var GMSPlacesServicesKey = "AIzaSyByB7OVg04q9jIAawE1i4IN0Il8I3Na1pU"
+    var GMSPlacesServicesKey_Alternate = "AIzaSyBbr2HM01bQwUpnJQGKlihQBy1GQ76ocpU"
+    var GMSPlacesWebServicesKey = "AIzaSyBYGcQrEimBrhEY6wYzLMHqisvxg0GkRf8"
+    var GMSDirectionsKey = "AIzaSyB1uYtfQ892wpwjxF4Nmoepb-YUjs79G3w"
     
     //MARK: Methods
     
@@ -40,8 +45,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      */
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        GMSServices.provideAPIKey("AIzaSyByB7OVg04q9jIAawE1i4IN0Il8I3Na1pU")
-        GMSPlacesClient.provideAPIKey("AIzaSyByB7OVg04q9jIAawE1i4IN0Il8I3Na1pU")
+        GMSServices.provideAPIKey(GMSMapServicesKey)
+        GMSPlacesClient.provideAPIKey(GMSPlacesServicesKey)
        
         // The first time a user opens the app, the user must see an onboarding screen
         // asking about the user's interests

@@ -25,6 +25,10 @@ import GooglePlaces
  *  `appDelegate`:          a reference back to the app's AppDelegate object.
  *  `defaultLocation`:      if the app is running in simulator mode, or if the user has not accepted location preferences, the map begins at Apple's headquarters.
  
+ *  `POIList`:              The table list of POIs for the user to select
+ *  `resultsReturned`:      The array of results returned by the nearby place lookup in dictionary form
+ *  `resultsData`:          The array of PlaceData objects for the returned POI results
+ 
  Navigation:
  *  override func prepare (for segue: UIStoryboardSegue, sender: Any?): This method lets you prepare the view controller before it's presented
  
@@ -38,18 +42,62 @@ import GooglePlaces
  *  CLLocationManagerDelegate:  The MapViewController has to implement the CLLocationManagerDelegate.
  */
 
-class MapViewController: UIViewController {
+class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return resultsReturned.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PlaceCell", for: indexPath as IndexPath)
+        let result = resultsReturned[indexPath.row] as? NSDictionary
+        cell.textLabel!.text = (result!["name"]) as? String
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let result = resultsData[indexPath.row]
+        
+        //Check if the marker is already on the map, if so: remove it
+        let position = result.coordinate.coordinate
+        for marker:GMSMarker in markers {
+            if ((position.latitude == marker.position.latitude) && (position.longitude == marker.position.longitude)) {
+                marker.map = nil
+                markers.remove(at: indexPath.row)
+                return
+            }
+        }
+        
+        //Now create marker to put on map
+        let marker = GMSMarker()
+        marker.position = result.coordinate.coordinate
+        marker.title = result.name
+        marker.snippet = result.name
+        
+        marker.appearAnimation = .pop
+        marker.map = mapView
+        markers.append(marker)
+        
+        updateMapZoom()
+        updateMapPolyline()
+    }
+    
     //MARK: Properties
 
-    ///a CLLocation that specifies the current location.
+    //a CLLocation that specifies the current location.
     var currentLocation: CLLocation?
     var mapView: GMSMapView!
     var placesClient: GMSPlacesClient!
     var zoomLevel: Float = 15.0
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var markers: [GMSMarker] = []
+    var resultsReturned: NSMutableArray = NSMutableArray()
+    var resultsData: Array<PlaceData> = Array()
+    var startLocation: CLLocationCoordinate2D = CLLocationCoordinate2D()
+    var endLocation: CLLocationCoordinate2D = CLLocationCoordinate2D()
 
-    //In case the location preferences have not been set, this is the location of Apple
+    @IBOutlet weak var POIList: UITableView!
+    
+    //In case the location preferences have not been set, this is the location of Apple headquarters
     let defaultLocation = CLLocation(latitude: 37.33182, longitude: -122.03118)
 
     /**
@@ -92,14 +140,30 @@ class MapViewController: UIViewController {
         // reset location to my location when the button is pressed
         mapView.settings.myLocationButton = true
         
+        //Register the table view
+        POIList.register(UITableViewCell.self, forCellReuseIdentifier: "PlaceCell")
+        POIList.dataSource = self
+        POIList.delegate = self
+        
         //Add the map to the view
         view.addSubview(mapView)
+        //Make the POI list hidden initially
+        POIList.isHidden = true
+        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    /*
+    func sendRequest (request: URLRequest, completion:@escaping (NSData?)->()) {
+        URLSession.shared.dataTask(with: request, completionHandler: {data, response, error in
+            return completion(data as! NSData)
+        }).resume()
+    }
+ */
     
     //MARK: Navigation
     
@@ -152,17 +216,107 @@ class MapViewController: UIViewController {
             addMarker(place: startPlace, type: "start")
             addMarker(place: endPlace, type: "end")
             
-            //Modify the map bounds to include both markers
-            //TODO: In the future, we can add the user's selected POIs to the MapView in the same way
+            startLocation = (startPlace?.coordinate)!
+            endLocation = (endPlace?.coordinate)!
             
-            let path = GMSMutablePath()
-            path.add((startPlace?.coordinate)!)
-            path.add((endPlace?.coordinate)!)
+            //Modify the map bounds to include all markers
+            updateMapZoom()
             
-            let bounds = GMSCoordinateBounds.init(path: path)
-            let update = GMSCameraUpdate.fit(bounds, withPadding: 60)
+            //Get midpoint
+            let longitude1: Double = Double(startPlace!.coordinate.longitude) * .pi / 180
+            let longitude2: Double = Double(endPlace!.coordinate.longitude) * .pi / 180
+            let latitude1: Double = Double(startPlace!.coordinate.latitude) * .pi / 180
+            let latitude2: Double = Double(endPlace!.coordinate.latitude) * .pi / 180
             
-            mapView.animate(with: update)
+            let longitudeDistance = longitude2 - longitude1
+            
+            let x = cos(latitude2) * cos(longitudeDistance)
+            let y = cos(latitude2) * sin(longitudeDistance)
+            
+            let latitude3 = atan2(sin(latitude1) + sin(latitude2), sqrt((cos(latitude1) + x) * (cos(latitude1) + x) + y * y))
+            let longitude3 = longitude1 + atan2(y, cos(latitude1) + x)
+            
+            var center: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: latitude3 * 180 / .pi, longitude: longitude3 * 180 / .pi)
+            
+            
+            // If you would like to see where the center is, then uncomment this code:
+            /*
+            let marker = GMSMarker()
+            marker.position = center
+            
+            marker.appearAnimation = .pop
+            marker.map = mapView
+            markers.append(marker)
+            
+            updateMapZoom()
+             */
+            
+            //Now display POIs:
+            let centerLat = String(describing: center.latitude)
+            let centerLong = String(describing: center.longitude)
+
+            //Get distance between end points
+            let start: CLLocation = CLLocation(latitude: (startPlace?.coordinate.latitude)!, longitude: (startPlace?.coordinate.longitude)!)
+            let end: CLLocation = CLLocation(latitude: (endPlace?.coordinate.latitude)!, longitude: (endPlace?.coordinate.longitude)!)
+            let endToEndDistanceMeters = end.distance(from: start)
+            //Get radius
+            let radius = endToEndDistanceMeters / 2
+            print("radius: \(radius)")
+            let radiusString = String(describing: radius)
+            
+            var urlString = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(centerLat),\(centerLong)&radius=\(radiusString)&type=restaurant&key=\(appDelegate.GMSPlacesWebServicesKey)"
+            
+            let url = URL(string: urlString)
+            let request = URLRequest(url: url!)
+            let config = URLSessionConfiguration.default
+            let session = URLSession(configuration: config)
+            
+            let group = DispatchGroup()
+            group.enter()
+            DispatchQueue.main.async {
+                let task = session.dataTask(with: request) {data, response, error in
+                    do {
+                        let json = (try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary)!
+                        let results = json["results"] as? NSArray
+                        
+                        for place:Any in results! {
+                            self.resultsReturned.add(place)
+                        }
+                        group.leave()
+                        return
+                    } catch {
+                        print(error)
+                        group.leave()
+                        return
+                    }
+                }
+                task.resume()
+            }
+            
+            group.notify(queue: .main) {
+                print("Here are the returned results:")
+                //resultsReturned is an array of dictionaries
+                for result:Any in self.resultsReturned {
+                    if let dictionaryResult = result as? NSDictionary {
+                        let placeID = dictionaryResult["id"]
+                        let name = dictionaryResult["name"]
+                        let geometry = dictionaryResult["geometry"] as? NSDictionary
+                        let location = geometry!["location"] as? NSDictionary
+                        let latitude = location!["lat"]
+                        let longitude = location!["lng"]
+                        
+                        let placeInfo = PlaceData(name: name as! String, id: placeID as! String, coordinate: CLLocation(latitude: latitude as! CLLocationDegrees, longitude: longitude as! CLLocationDegrees))
+                        
+                        self.resultsData.append(placeInfo)
+                        
+                        print("name: \(String(describing: name))")
+                    }
+                }
+                self.POIList.reloadData()
+                self.POIList.isHidden = false
+                self.view.bringSubview(toFront: self.POIList)
+                
+            }
         }
     }
     
@@ -190,7 +344,59 @@ class MapViewController: UIViewController {
         marker.map = mapView
         markers.append(marker)
     }
-
+    
+    func updateMapZoom() {
+        let path = GMSMutablePath()
+        for marker:GMSMarker in markers {
+            path.add(marker.position)
+        }
+        let bounds = GMSCoordinateBounds.init(path: path)
+        let update = GMSCameraUpdate.fit(bounds, withPadding: 150)
+        
+        mapView.animate(with: update)
+    }
+    
+    func updateMapPolyline() {
+        let config = URLSessionConfiguration.default
+        let session = URLSession(configuration: config)
+        
+        //Construct the request:
+        let originLat = String(describing: startLocation.latitude)
+        let originLong = String(describing: startLocation.longitude)
+        let endLat = String(describing: endLocation.latitude)
+        let endLong = String(describing: endLocation.longitude)
+        var url = "https://maps.googleapis.com/maps/api/directions/json?"
+        url += "origin=\(originLat),\(originLong)"
+        url += "&destination=\(endLat),\(endLong)"
+        
+        //Add waypoints that are not the start nor end
+        var waypointsString = ""
+        for marker:GMSMarker in markers {
+            var latBool: Bool
+            latBool = ((marker.position.latitude != startLocation.latitude) && (marker.position.latitude != endLocation.latitude))
+            var lonBool: Bool
+            lonBool = ((marker.position.longitude != startLocation.longitude) && (marker.position.longitude != endLocation.longitude))
+            
+            //The marker is different from the start and end
+            if ((latBool == true) && (lonBool == true)) {
+                let waypointLatString = String(describing: marker.position.latitude)
+                let waypointLonString = String(describing: marker.position.longitude)
+                waypointsString += "\(waypointLatString),\(waypointLonString)|"
+            }
+                
+        }
+        //Remove last pipe:
+        if (waypointsString.last == "|") {
+            waypointsString.remove(at: waypointsString.index(before: waypointsString.endIndex))
+        }
+        url += "&waypoints=optimize:true|"
+        url += waypointsString
+        url += "&key=\(appDelegate.GMSDirectionsKey)"
+        
+        print(url)
+        
+        //TODO: Finish adding path to map
+    }
 }
 
 //MARK: Delegates
@@ -247,5 +453,11 @@ extension MapViewController: CLLocationManagerDelegate {
         appDelegate.locationManager.stopUpdatingLocation()
         print("Error: \(error)")
     }
+}
+
+struct PlaceData {
+    var name: String
+    var id: String
+    var coordinate: CLLocation
 }
 
