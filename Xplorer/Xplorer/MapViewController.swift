@@ -243,8 +243,16 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             startLocation = (startPlace?.coordinate)!
             endLocation = (endPlace?.coordinate)!
             
+            /* TODO: Fix map zooming and camera position when receiving new start and end itinerary from user
+            //Make the map's camera position be the new start, as opposed to current location
+            //  Note that the zoom position is temporary right now, because it will be updated with updateMapZoom()
+            let newPosition = GMSCameraPosition.camera(withLatitude: startLocation.latitude, longitude: endLocation.longitude, zoom: 8)
+            mapView.camera = newPosition
+ */
+            
             //Modify the map bounds to include all markers
             updateMapZoom()
+            
             
             //Get midpoint
             let longitude1: Double = Double(startPlace!.coordinate.longitude) * .pi / 180
@@ -336,6 +344,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                         print("name: \(String(describing: name))")
                     }
                 }
+                //TODO: Table data does not reload when user enters new start and end information
                 self.POIList.reloadData()
                 self.POIList.isHidden = false
                 self.view.bringSubview(toFront: self.POIList)
@@ -374,6 +383,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         for marker:GMSMarker in markers {
             path.add(marker.position)
         }
+        
         let bounds = GMSCoordinateBounds.init(path: path)
         let update = GMSCameraUpdate.fit(bounds, withPadding: 150)
         
