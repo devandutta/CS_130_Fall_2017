@@ -154,6 +154,11 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         POIList.dataSource = self
         POIList.delegate = self
         
+        //Make the table view look nicer
+        POIList.separatorColor = UIColor.blue
+        POIList.layer.cornerRadius = 10
+        POIList.layer.masksToBounds = true
+        
         //Add the map to the view
         view.addSubview(mapView)
         //Make the POI list hidden initially
@@ -449,7 +454,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             polyline.map = self.mapView
             
             let bounds = GMSCoordinateBounds.init(path: path!)
-            let update = GMSCameraUpdate.fit(bounds, withPadding: 90)
+            let update = GMSCameraUpdate.fit(bounds, withPadding: 110)
             self.mapView.animate(with: update)
         }
     }
