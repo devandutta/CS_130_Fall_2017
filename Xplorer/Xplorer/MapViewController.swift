@@ -29,6 +29,9 @@ import GooglePlaces
  *  `resultsReturned`:      The array of results returned by the nearby place lookup in dictionary form
  *  `resultsData`:          The array of PlaceData objects for the returned POI results
  
+ *  `startLocation`:        CLLocationCoordinate2D that stores the user's start location
+ *  `endLocation`:          CLLocationCoordinate2D that stores the user's end location
+ 
  Navigation:
  *  override func prepare (for segue: UIStoryboardSegue, sender: Any?): This method lets you prepare the view controller before it's presented
  
@@ -103,6 +106,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     var resultsData: Array<PlaceData> = Array()
     var startLocation: CLLocationCoordinate2D = CLLocationCoordinate2D()
     var endLocation: CLLocationCoordinate2D = CLLocationCoordinate2D()
+    var polylines: [GMSPolyline] = []
 
     @IBOutlet weak var POIList: UITableView!
     
@@ -211,6 +215,12 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                 marker.map = nil
             }
             markers.removeAll()
+            
+            // Also, remove any polylines that were on the map:
+            for polyline in polylines {
+                polyline.map = nil
+            }
+            polylines.removeAll()
             
             // Get the start place and the end place
             let startPlace = sourceViewController.startPlace
@@ -452,6 +462,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             polyline.strokeWidth = 3
             polyline.strokeColor = UIColor.blue
             polyline.map = self.mapView
+            self.polylines.append(polyline)
             
             let bounds = GMSCoordinateBounds.init(path: path!)
             let update = GMSCameraUpdate.fit(bounds, withPadding: 110)
