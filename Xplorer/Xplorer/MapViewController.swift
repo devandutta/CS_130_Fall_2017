@@ -107,6 +107,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     //MARK: Properties
+    //TODO: Move all properties above the UITableViewDelegate and UITableViewDataSource definitions
 
     //a CLLocation that specifies the current location.
     var currentLocation: CLLocation?
