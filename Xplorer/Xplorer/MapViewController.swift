@@ -51,9 +51,15 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PlaceCell", for: indexPath as IndexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PlaceCell", for: indexPath as IndexPath) as! POITableViewCell
         let result = resultsReturned[indexPath.row] as? NSDictionary
-        cell.textLabel!.text = (result!["name"]) as? String
+        cell.placeName.text = (result!["name"]) as? String
+        cell.address.text = (result!["vicinity"]) as? String
+        
+        // Do price calculations
+        let priceNumber = (result!["price_level"]) as? Int ?? 2
+        var priceDict = [1:"$", 2:"$$", 3:"$$$", 4:"$$$$"]
+        cell.price.text = priceDict[priceNumber]
         return cell
     }
     
@@ -108,7 +114,6 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     var endLocation: CLLocationCoordinate2D = CLLocationCoordinate2D()
     var polylines: [GMSPolyline] = []
 
-    @IBOutlet weak var tripPlaning: UIBarButtonItem!
     @IBOutlet weak var POIList: UITableView!
     
     //In case the location preferences have not been set, this is the location of Apple headquarters
@@ -161,28 +166,19 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             NSLog("One or more of the map styles failed to load. \(error)")
         }
 
-        // change the nav bar color
-        self.navigationController?.navigationBar.barTintColor = UIColor.darkGray
-        self.navigationController?.navigationBar.tintColor = UIColor.white
-//        self.navigationController?.navigationBar.titleTextAttributes = [
-//            NSAttributedStringKey.foregroundColor: UIColor.white,
-//            NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .bold)
-//        ]
-        tripPlaning.setTitleTextAttributes([
-            NSAttributedStringKey.foregroundColor: UIColor.white,
-            NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .bold)
-            ], for: .normal)
+        
+        
         // reset location to my location when the button is pressed
         mapView.settings.myLocationButton = true
         
         //Register the table view
-        POIList.register(UITableViewCell.self, forCellReuseIdentifier: "PlaceCell")
+//        POIList.register(POITableViewCell.self, forCellReuseIdentifier: "PlaceCell")
         POIList.dataSource = self
         POIList.delegate = self
         
         //Make the table view look nicer
         POIList.separatorColor = UIColor.blue
-        POIList.layer.cornerRadius = 10
+//        POIList.layer.cornerRadius = 10
         POIList.layer.masksToBounds = true
         
         //Add the map to the view
@@ -358,12 +354,12 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                         let location = geometry!["location"] as? NSDictionary
                         let latitude = location!["lat"]
                         let longitude = location!["lng"]
-                        
                         let placeInfo = PlaceData(name: name as! String, id: placeID as! String, coordinate: CLLocation(latitude: latitude as! CLLocationDegrees, longitude: longitude as! CLLocationDegrees))
                         
                         self.resultsData.append(placeInfo)
                         
                         print("name: \(String(describing: name))")
+                        print(dictionaryResult)
                     }
                 }
                 //TODO: Table data does not reload when user enters new start and end information
