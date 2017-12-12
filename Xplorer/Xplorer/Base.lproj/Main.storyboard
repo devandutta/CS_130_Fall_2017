@@ -75,13 +75,14 @@
                     </navigationItem>
                     <connections>
                         <outlet property="POIList" destination="wCi-7r-EeO" id="8Px-qb-V9Z"/>
+                        <outlet property="tripPlanning" destination="xcQ-hg-etr" id="sev-BU-tAH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="372" y="31.934032983508249"/>
         </scene>
-        <!--Enter Time and Location Info-->
+        <!--Enter Time and Location-->
         <scene sceneID="JaX-LW-sYL">
             <objects>
                 <viewController storyboardIdentifier="timeAndLocation" useStoryboardIdentifierAsRestorationIdentifier="YES" id="DKo-oc-eUX" customClass="TimeAndLocationViewController" customModule="Xplorer" customModuleProvider="target" sceneMemberID="viewController">
@@ -89,6 +90,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="elr-xh-eBz">
+                                <rect key="frame" x="0.0" y="355" width="375" height="312"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.95686274509803915" green="0.95686274509803915" blue="0.95686274509803915" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Start Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xSS-K3-VTo">
                                 <rect key="frame" x="15" y="76" width="165" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -97,41 +106,41 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="End Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="14s-pB-7aL">
-                                <rect key="frame" x="16" y="381" width="100" height="30"/>
+                                <rect key="frame" x="16" y="375" width="135" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Please enter the end location." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VgT-ss-GU2">
-                                <rect key="frame" x="131" y="381" width="228" height="30"/>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Please enter the end location." adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VgT-ss-GU2">
+                                <rect key="frame" x="15" y="410" width="343" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <action selector="openSearchAddressEndPlace:" destination="DKo-oc-eUX" eventType="touchDown" id="Sh4-l6-VhL"/>
                                 </connections>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="End Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cqd-Gf-6fx">
-                                <rect key="frame" x="16" y="438" width="80" height="30"/>
+                                <rect key="frame" x="16" y="455" width="104" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Please enter the start location." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mXK-F5-fMv">
-                                <rect key="frame" x="16" y="109" width="343" height="30"/>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Please enter the start location." adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mXK-F5-fMv">
+                                <rect key="frame" x="15" y="111" width="343" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <action selector="openSearchAddressStartPlace:" destination="DKo-oc-eUX" eventType="touchDown" id="rBX-nE-mVq"/>
                                 </connections>
                             </textField>
                             <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="ePA-6c-ub7">
-                                <rect key="frame" x="0.0" y="166" width="375" height="162"/>
+                                <rect key="frame" x="0.0" y="185" width="375" height="162"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <date key="date" timeIntervalSinceReferenceDate="532343829.32339501">
                                     <!--2017-11-14 09:17:09 +0000-->
@@ -145,9 +154,9 @@
                                 </date>
                             </datePicker>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Start Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nbv-2A-LsC">
-                                <rect key="frame" x="15" y="172" width="80" height="30"/>
+                                <rect key="frame" x="16" y="156" width="104" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -156,7 +165,7 @@
                         <accessibility key="accessibilityConfiguration" identifier="timeAndLocationVC"/>
                         <viewLayoutGuide key="safeArea" id="7n1-Hw-NCv"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Enter Time and Location Info" id="B7I-5n-QYA">
+                    <navigationItem key="navigationItem" title="Enter Time and Location" id="B7I-5n-QYA">
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="bjA-dQ-Tdc">
                             <connections>
                                 <segue destination="gPU-Cu-KDS" kind="unwind" unwindAction="unwindToMapViewWithSender:" id="Q0O-XU-zIU"/>
@@ -184,16 +193,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tabBar contentMode="scaleToFill" fixedFrame="YES" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zir-a1-8Kj">
-                                <rect key="frame" x="0.0" y="568" width="375" height="49"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <items>
-                                    <tabBarItem systemItem="more" id="M4e-9a-rVI"/>
-                                </items>
-                            </tabBar>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="main_image.png" translatesAutoresizingMaskIntoConstraints="NO" id="I4O-lz-Prm">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LUv-VX-B5f">
-                                <rect key="frame" x="117" y="605" width="141" height="39"/>
+                                <rect key="frame" x="63" y="551" width="249" height="61"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.8901960784313725" green="0.8901960784313725" blue="0.8901960784313725" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="START">
@@ -210,7 +215,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hjU-Th-BDL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2090" y="-49"/>
+            <point key="canvasLocation" x="-2090.4000000000001" y="-49.025487256371818"/>
         </scene>
         <!--InterestViewController-->
         <scene sceneID="c7K-8s-SJw">
@@ -373,5 +378,6 @@
         <image name="food_highlight.png" width="336" height="314"/>
         <image name="garden_base.png" width="336" height="314"/>
         <image name="garden_highlight.png" width="336" height="314"/>
+        <image name="main_image.png" width="1125" height="2001"/>
     </resources>
 </document>

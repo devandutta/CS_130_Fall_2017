@@ -90,6 +90,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         marker.position = result.coordinate.coordinate
         marker.title = result.name
         marker.snippet = result.name
+        marker.icon = GMSMarker.markerImage(with: UIColor.init(red: 0.192, green: 0.294, blue:0.4 , alpha: 1.0) ) // 0.192, 0.294, 0.4
         
         marker.appearAnimation = .pop
         marker.map = mapView
@@ -113,7 +114,9 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     var startLocation: CLLocationCoordinate2D = CLLocationCoordinate2D()
     var endLocation: CLLocationCoordinate2D = CLLocationCoordinate2D()
     var polylines: [GMSPolyline] = []
-
+    
+    @IBOutlet weak var tripPlanning: UIBarButtonItem!
+    
     @IBOutlet weak var POIList: UITableView!
     
     //In case the location preferences have not been set, this is the location of Apple headquarters
@@ -165,8 +168,14 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         } catch {
             NSLog("One or more of the map styles failed to load. \(error)")
         }
-
         
+         // change the nav bar color
+        self.navigationController?.navigationBar.barTintColor = UIColor.darkGray
+        self.navigationController?.navigationBar.tintColor = UIColor.white
+        tripPlanning.setTitleTextAttributes([
+                        NSAttributedStringKey.foregroundColor: UIColor.white,
+                        NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .bold)
+                        ], for: .normal)
         
         // reset location to my location when the button is pressed
         mapView.settings.myLocationButton = true
@@ -384,13 +393,12 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         marker.title = place?.name
         marker.snippet = place?.formattedAddress
         if(type == "start") {
-            marker.icon = GMSMarker.markerImage(with: .blue)
+            marker.icon = GMSMarker.markerImage(with: UIColor.init(red: 0.643, green: 0.078, blue: 0.157, alpha: 1.0)) // 0.643, 0.078, 0.157
         }
         
         else if(type == "end") {
-            marker.icon = GMSMarker.markerImage(with: .red)
+            marker.icon = GMSMarker.markerImage(with: UIColor.init(red: 0.027, green: 0.561, blue: 0.365, alpha: 1.0)) // 0.027, 0.561, 0.365
         }
-        
         marker.appearAnimation = .pop
         marker.map = mapView
         markers.append(marker)
@@ -488,7 +496,8 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             let path = GMSMutablePath(fromEncodedPath: polylinePoints)
             let polyline = GMSPolyline(path: path)
             polyline.strokeWidth = 3
-            polyline.strokeColor = UIColor.blue
+            polyline.strokeColor = UIColor.init(red: 0.58, green: 0.624, blue:0.71 , alpha: 1.0) // 0.58, 0.624, 0.71
+
             polyline.map = self.mapView
             self.polylines.append(polyline)
             
