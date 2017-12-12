@@ -80,6 +80,12 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                     marker.map = nil
                     markers.remove(at: index!)
                     print("Number of items in markers after removal: \(markers.count)")
+                    
+                    for polyline in polylines {
+                        polyline.map = nil
+                    }
+                    polylines.removeAll()
+                    updateMapPolyline()
                     return
                 }
             }
@@ -269,6 +275,8 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             
             startLocation = (startPlace?.coordinate)!
             endLocation = (endPlace?.coordinate)!
+            
+            updateMapPolyline()
             
             /* TODO: Fix map zooming and camera position when receiving new start and end itinerary from user
             //Make the map's camera position be the new start, as opposed to current location
