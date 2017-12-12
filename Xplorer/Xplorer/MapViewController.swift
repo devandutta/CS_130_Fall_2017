@@ -91,7 +91,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             }
         }
         
-        //Now create marker to put on map
+        //Else, create marker to put on map
         let marker = GMSMarker()
         marker.position = result.coordinate.coordinate
         marker.title = result.name
