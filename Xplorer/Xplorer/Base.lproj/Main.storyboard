@@ -47,6 +47,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="POIList" destination="wCi-7r-EeO" id="8Px-qb-V9Z"/>
+                        <outlet property="tripPlaning" destination="xcQ-hg-etr" id="Rd0-Eo-R2m"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

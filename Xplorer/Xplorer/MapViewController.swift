@@ -108,6 +108,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     var endLocation: CLLocationCoordinate2D = CLLocationCoordinate2D()
     var polylines: [GMSPolyline] = []
 
+    @IBOutlet weak var tripPlaning: UIBarButtonItem!
     @IBOutlet weak var POIList: UITableView!
     
     //In case the location preferences have not been set, this is the location of Apple headquarters
@@ -160,8 +161,17 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             NSLog("One or more of the map styles failed to load. \(error)")
         }
 
-        
-        
+        // change the nav bar color
+        self.navigationController?.navigationBar.barTintColor = UIColor.darkGray
+        self.navigationController?.navigationBar.tintColor = UIColor.white
+//        self.navigationController?.navigationBar.titleTextAttributes = [
+//            NSAttributedStringKey.foregroundColor: UIColor.white,
+//            NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .bold)
+//        ]
+        tripPlaning.setTitleTextAttributes([
+            NSAttributedStringKey.foregroundColor: UIColor.white,
+            NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .bold)
+            ], for: .normal)
         // reset location to my location when the button is pressed
         mapView.settings.myLocationButton = true
         
