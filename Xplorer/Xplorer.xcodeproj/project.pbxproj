@@ -25,6 +25,9 @@
 		98DA079B1FDFA0E60074D69D /* food_highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = 98DA07931FDFA0E60074D69D /* food_highlight.png */; };
 		98DA079C1FDFA0E60074D69D /* entertainment_highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = 98DA07941FDFA0E60074D69D /* entertainment_highlight.png */; };
 		98DA079D1FDFA0E60074D69D /* garden_highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = 98DA07951FDFA0E60074D69D /* garden_highlight.png */; };
+		98DA07A11FDFBC330074D69D /* POITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98DA07A01FDFBC330074D69D /* POITableViewCell.swift */; };
+		98DA07A31FDFE0CC0074D69D /* Oval@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 98DA07A21FDFE0CC0074D69D /* Oval@2x.png */; };
+		98DA07A51FDFE94A0074D69D /* main_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 98DA07A41FDFE94A0074D69D /* main_image.png */; };
 		98F4D38C1FD93F2400BA583B /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F4D38B1FD93F2400BA583B /* StartViewController.swift */; };
 		98F4D38E1FDA61D800BA583B /* dark_grey_rect.png in Resources */ = {isa = PBXBuildFile; fileRef = 98F4D38D1FDA61D800BA583B /* dark_grey_rect.png */; };
 		98F4D3901FDA61E100BA583B /* light_grey_rect.png in Resources */ = {isa = PBXBuildFile; fileRef = 98F4D38F1FDA61E100BA583B /* light_grey_rect.png */; };
@@ -66,6 +69,9 @@
 		98DA07931FDFA0E60074D69D /* food_highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = food_highlight.png; path = ../../Xplorer_App_Styles/food_highlight.png; sourceTree = "<group>"; };
 		98DA07941FDFA0E60074D69D /* entertainment_highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = entertainment_highlight.png; path = ../../Xplorer_App_Styles/entertainment_highlight.png; sourceTree = "<group>"; };
 		98DA07951FDFA0E60074D69D /* garden_highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = garden_highlight.png; path = ../../Xplorer_App_Styles/garden_highlight.png; sourceTree = "<group>"; };
+		98DA07A01FDFBC330074D69D /* POITableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = POITableViewCell.swift; sourceTree = "<group>"; };
+		98DA07A21FDFE0CC0074D69D /* Oval@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Oval@2x.png"; sourceTree = "<group>"; };
+		98DA07A41FDFE94A0074D69D /* main_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_image.png; sourceTree = "<group>"; };
 		98F4D38B1FD93F2400BA583B /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		98F4D38D1FDA61D800BA583B /* dark_grey_rect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dark_grey_rect.png; sourceTree = "<group>"; };
 		98F4D38F1FDA61E100BA583B /* light_grey_rect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = light_grey_rect.png; sourceTree = "<group>"; };
@@ -117,6 +123,7 @@
 		0789C7591FB7073900D73FAF /* Xplorer */ = {
 			isa = PBXGroup;
 			children = (
+				98DA07A01FDFBC330074D69D /* POITableViewCell.swift */,
 				98F4D3931FDA648900BA583B /* InterestViewController.swift */,
 				0789C75A1FB7073900D73FAF /* AppDelegate.swift */,
 				0789C75C1FB7073900D73FAF /* MapViewController.swift */,
@@ -124,7 +131,9 @@
 				0789C75E1FB7073900D73FAF /* Main.storyboard */,
 				98F4D38B1FD93F2400BA583B /* StartViewController.swift */,
 				98DA078C1FDF96760074D69D /* style.json */,
+				98DA07A41FDFE94A0074D69D /* main_image.png */,
 				98DA078E1FDFA0E50074D69D /* drinks_base.png */,
+				98DA07A21FDFE0CC0074D69D /* Oval@2x.png */,
 				98DA07901FDFA0E60074D69D /* drinks_highlight.png */,
 				98DA078F1FDFA0E50074D69D /* entertainment_base.png */,
 				98DA07941FDFA0E60074D69D /* entertainment_highlight.png */,
@@ -267,8 +276,10 @@
 				0789C7621FB7073900D73FAF /* Assets.xcassets in Resources */,
 				98F4D3901FDA61E100BA583B /* light_grey_rect.png in Resources */,
 				98DA079D1FDFA0E60074D69D /* garden_highlight.png in Resources */,
+				98DA07A51FDFE94A0074D69D /* main_image.png in Resources */,
 				98DA079A1FDFA0E60074D69D /* food_base.png in Resources */,
 				98DA078D1FDF96760074D69D /* style.json in Resources */,
+				98DA07A31FDFE0CC0074D69D /* Oval@2x.png in Resources */,
 				98F4D38E1FDA61D800BA583B /* dark_grey_rect.png in Resources */,
 				98DA079C1FDFA0E60074D69D /* entertainment_highlight.png in Resources */,
 				0789C7601FB7073900D73FAF /* Main.storyboard in Resources */,
@@ -401,6 +412,7 @@
 				98F4D38C1FD93F2400BA583B /* StartViewController.swift in Sources */,
 				98F4D3941FDA648900BA583B /* InterestViewController.swift in Sources */,
 				0789C75D1FB7073900D73FAF /* MapViewController.swift in Sources */,
+				98DA07A11FDFBC330074D69D /* POITableViewCell.swift in Sources */,
 				0789C75B1FB7073900D73FAF /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

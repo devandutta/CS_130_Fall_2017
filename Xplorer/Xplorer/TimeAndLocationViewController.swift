@@ -72,6 +72,21 @@ class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSA
         doneButton.isEnabled = false
         startLocation.delegate = self
         endLocation.delegate = self
+        let paddingView: UIView = UIView.init(frame: CGRect(x: 0, y: 0, width: 5, height: 20))
+        startLocation.leftView = paddingView
+        startLocation.leftViewMode = .always
+        let paddingView2: UIView = UIView.init(frame: CGRect(x: 0, y: 0, width: 5, height: 20))
+        endLocation.leftView = paddingView2
+        endLocation.leftViewMode = .always
+        
+        // change the nav bar color
+        self.navigationController?.navigationBar.barTintColor = UIColor.darkGray
+        self.navigationController?.navigationBar.tintColor = UIColor.white
+        self.navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedStringKey.foregroundColor: UIColor.white,
+            NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .bold)
+        ]
+        
     }
 
     /**

@@ -51,9 +51,15 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PlaceCell", for: indexPath as IndexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PlaceCell", for: indexPath as IndexPath) as! POITableViewCell
         let result = resultsReturned[indexPath.row] as? NSDictionary
-        cell.textLabel!.text = (result!["name"]) as? String
+        cell.placeName.text = (result!["name"]) as? String
+        cell.address.text = (result!["vicinity"]) as? String
+        
+        // Do price calculations
+        let priceNumber = (result!["price_level"]) as? Int ?? 2
+        var priceDict = [1:"$", 2:"$$", 3:"$$$", 4:"$$$$"]
+        cell.price.text = priceDict[priceNumber]
         return cell
     }
     
@@ -84,6 +90,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         marker.position = result.coordinate.coordinate
         marker.title = result.name
         marker.snippet = result.name
+        marker.icon = GMSMarker.markerImage(with: UIColor.init(red: 0.192, green: 0.294, blue:0.4 , alpha: 1.0) ) // 0.192, 0.294, 0.4
         
         marker.appearAnimation = .pop
         marker.map = mapView
@@ -107,7 +114,9 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     var startLocation: CLLocationCoordinate2D = CLLocationCoordinate2D()
     var endLocation: CLLocationCoordinate2D = CLLocationCoordinate2D()
     var polylines: [GMSPolyline] = []
-
+    
+    @IBOutlet weak var tripPlanning: UIBarButtonItem!
+    
     @IBOutlet weak var POIList: UITableView!
     
     //In case the location preferences have not been set, this is the location of Apple headquarters
@@ -159,20 +168,26 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         } catch {
             NSLog("One or more of the map styles failed to load. \(error)")
         }
-
         
+         // change the nav bar color
+        self.navigationController?.navigationBar.barTintColor = UIColor.darkGray
+        self.navigationController?.navigationBar.tintColor = UIColor.white
+        tripPlanning.setTitleTextAttributes([
+                        NSAttributedStringKey.foregroundColor: UIColor.white,
+                        NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .bold)
+                        ], for: .normal)
         
         // reset location to my location when the button is pressed
         mapView.settings.myLocationButton = true
         
         //Register the table view
-        POIList.register(UITableViewCell.self, forCellReuseIdentifier: "PlaceCell")
+//        POIList.register(POITableViewCell.self, forCellReuseIdentifier: "PlaceCell")
         POIList.dataSource = self
         POIList.delegate = self
         
         //Make the table view look nicer
         POIList.separatorColor = UIColor.blue
-        POIList.layer.cornerRadius = 10
+//        POIList.layer.cornerRadius = 10
         POIList.layer.masksToBounds = true
         
         //Add the map to the view
@@ -348,12 +363,12 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                         let location = geometry!["location"] as? NSDictionary
                         let latitude = location!["lat"]
                         let longitude = location!["lng"]
-                        
                         let placeInfo = PlaceData(name: name as! String, id: placeID as! String, coordinate: CLLocation(latitude: latitude as! CLLocationDegrees, longitude: longitude as! CLLocationDegrees))
                         
                         self.resultsData.append(placeInfo)
                         
                         print("name: \(String(describing: name))")
+                        print(dictionaryResult)
                     }
                 }
                 //TODO: Table data does not reload when user enters new start and end information
@@ -378,13 +393,12 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         marker.title = place?.name
         marker.snippet = place?.formattedAddress
         if(type == "start") {
-            marker.icon = GMSMarker.markerImage(with: .blue)
+            marker.icon = GMSMarker.markerImage(with: UIColor.init(red: 0.643, green: 0.078, blue: 0.157, alpha: 1.0)) // 0.643, 0.078, 0.157
         }
         
         else if(type == "end") {
-            marker.icon = GMSMarker.markerImage(with: .red)
+            marker.icon = GMSMarker.markerImage(with: UIColor.init(red: 0.027, green: 0.561, blue: 0.365, alpha: 1.0)) // 0.027, 0.561, 0.365
         }
-        
         marker.appearAnimation = .pop
         marker.map = mapView
         markers.append(marker)
@@ -482,7 +496,8 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             let path = GMSMutablePath(fromEncodedPath: polylinePoints)
             let polyline = GMSPolyline(path: path)
             polyline.strokeWidth = 3
-            polyline.strokeColor = UIColor.blue
+            polyline.strokeColor = UIColor.init(red: 0.58, green: 0.624, blue:0.71 , alpha: 1.0) // 0.58, 0.624, 0.71
+
             polyline.map = self.mapView
             self.polylines.append(polyline)
             
