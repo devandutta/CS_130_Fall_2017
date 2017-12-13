@@ -1,6 +1,5 @@
 //
-//  XplorerTests.swift
-//  XplorerTests
+
 //
 //  Created by Devan Dutta on 11/11/17.
 //  Copyright © 2017 devan.dutta. All rights reserved.

@@ -220,7 +220,7 @@
         <!--InterestViewController-->
         <scene sceneID="c7K-8s-SJw">
             <objects>
-                <viewController title="InterestViewController" id="gvu-r8-agj" customClass="InterestViewController" customModule="Xplorer" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="interest" title="InterestViewController" id="gvu-r8-agj" customClass="InterestViewController" customModule="Xplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="xiG-fz-DS4">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
