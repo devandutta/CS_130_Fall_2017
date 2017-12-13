@@ -102,6 +102,10 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         marker.map = mapView
         markers.append(marker)
         
+        for polyline in polylines {
+            polyline.map = nil
+        }
+        polylines.removeAll()
         updateMapZoom()
         updateMapPolyline()
     }
