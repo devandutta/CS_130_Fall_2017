@@ -209,13 +209,6 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         // Dispose of any resources that can be recreated.
     }
     
-    /*
-    func sendRequest (request: URLRequest, completion:@escaping (NSData?)->()) {
-        URLSession.shared.dataTask(with: request, completionHandler: {data, response, error in
-            return completion(data as! NSData)
-        }).resume()
-    }
- */
     
     //MARK: Navigation
     
@@ -277,7 +270,11 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             startLocation = (startPlace?.coordinate)!
             endLocation = (endPlace?.coordinate)!
             
+            //Draw optimized route between start and end
             updateMapPolyline()
+            
+            //Move the "myLocationButton" and Google attribution up so that the POI list doesn't block it
+            mapView.padding = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
             
             /* TODO: Fix map zooming and camera position when receiving new start and end itinerary from user
             //Make the map's camera position be the new start, as opposed to current location
