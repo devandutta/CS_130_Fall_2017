@@ -253,6 +253,10 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             }
             polylines.removeAll()
             
+            // Also, remove all resultsReturned and resultsData from any previous user info
+            self.resultsData.removeAll()
+            self.resultsReturned.removeAllObjects()
+            
             // Get the start place and the end place
             let startPlace = sourceViewController.startPlace
             let endPlace = sourceViewController.endPlace
@@ -379,9 +383,10 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                         
                         print("name: \(String(describing: name))")
                         print(dictionaryResult)
+                        
                     }
                 }
-                //TODO: Table data does not reload when user enters new start and end information
+                
                 self.POIList.reloadData()
                 self.POIList.isHidden = false
                 self.view.bringSubview(toFront: self.POIList)
