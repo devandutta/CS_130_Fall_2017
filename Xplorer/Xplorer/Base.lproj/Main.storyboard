@@ -168,7 +168,7 @@
                     <navigationItem key="navigationItem" title="Enter Time and Location" id="B7I-5n-QYA">
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="bjA-dQ-Tdc">
                             <connections>
-                                <segue destination="gPU-Cu-KDS" kind="unwind" unwindAction="unwindToMapViewWithSender:" id="Q0O-XU-zIU"/>
+                                <action selector="doneButtonPressed:" destination="DKo-oc-eUX" id="311-Bg-W96"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -178,6 +178,7 @@
                         <outlet property="endTime" destination="HDA-3a-vvK" id="iNU-Be-WM1"/>
                         <outlet property="startLocation" destination="mXK-F5-fMv" id="yYJ-Az-Eir"/>
                         <outlet property="startTime" destination="ePA-6c-ub7" id="gVc-as-owa"/>
+                        <segue destination="gPU-Cu-KDS" kind="unwind" identifier="unwindToMapViewIdentifier" unwindAction="unwindToMapViewWithSender:" id="ArP-AJ-cNy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="F88-gZ-5mC" userLabel="First Responder" sceneMemberID="firstResponder"/>

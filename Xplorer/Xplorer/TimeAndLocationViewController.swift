@@ -200,6 +200,134 @@ class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSA
         handleAutocomplete(sender: sender)
     }
     
+    @IBAction func doneButtonPressed(_ sender: UIBarButtonItem) {
+        
+        //COMPARE LOCATIONS:
+        let placeID1 = startPlace?.placeID
+        let placeID2 = endPlace?.placeID
+        
+        if (placeID1 == placeID2) {
+            let placeAlert = UIAlertController(title: "Place Error", message: "The start and end locations must be different.", preferredStyle: .alert)
+            placeAlert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: {
+                _ in NSLog("The \"OK\" alert occurred.")
+            }))
+            
+            self.present(placeAlert, animated: true, completion: nil)
+            return
+        }
+        
+        //COMPARE TIMES:
+        startTimeInfo = startTime.date as NSDate?
+        endTimeInfo = endTime.date as NSDate?
+        
+        print("end time: \(endTime.date)")
+        print("start time: \(startTime.date)")
+        
+        var order = NSCalendar.current.compare(startTimeInfo! as Date, to: endTimeInfo as! Date, toGranularity: .minute)
+        
+        if ((order == .orderedSame) || (order == .orderedDescending)) {
+            let timeAlert = UIAlertController(title: "Time Error", message: "The end time must be later than the start time.", preferredStyle: .alert)
+            timeAlert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: {
+                _ in NSLog("The \"OK\" alert occurred.")
+            }))
+            
+            self.present(timeAlert, animated: true, completion: nil)
+            return
+        }
+        
+        //SEE IF START AND END TIMES ARE REALISTIC:
+        let config = URLSessionConfiguration.default
+        let session = URLSession(configuration: config)
+        
+        //Construct the request:
+        let originLat = String(describing: startPlace!.coordinate.latitude)
+        let originLong = String(describing: startPlace!.coordinate.longitude)
+        let endLat = String(describing: endPlace!.coordinate.latitude)
+        let endLong = String(describing: endPlace!.coordinate.longitude)
+        var url = "https://maps.googleapis.com/maps/api/directions/json?"
+        url += "origin=\(originLat),\(originLong)"
+        url += "&destination=\(endLat),\(endLong)"
+        url += "&key=\(appDelegate.GMSDirectionsKey)"
+        
+        print(url)
+        
+        let formattedURL = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        print(formattedURL)
+        let urlQuery = URL(string: formattedURL!)!
+        
+        //Query Google Directions API to get time back:
+        //totalDuration is the total duration in seconds of the journey
+        var totalDuration: Double
+        totalDuration = 0
+        let group = DispatchGroup()
+        group.enter()
+        DispatchQueue.main.async {
+            let task = session.dataTask(with: urlQuery) {data, response, error in
+                do {
+                    if error != nil {
+                        print("error: \(error?.localizedDescription)")
+                        return
+                    }
+                    
+                    print("Is valid JSON: \(data)")
+                    
+                    let json = (try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary)!
+                    let routes = json["routes"] as! NSArray
+                    let route1 = routes[0] as! NSDictionary
+                    print(route1)
+                    let legs = route1["legs"] as! NSArray
+                    
+                    for leg in legs {
+                        let legDict = leg as! NSDictionary
+                        let steps = legDict["steps"] as! NSArray
+                        for step in steps {
+                            let step = step as! NSDictionary
+                            let duration = step["duration"] as! NSDictionary
+                            let value = duration["value"] as! Int
+                            totalDuration += Double(value)
+                        }
+                    }
+                    
+                    group.leave()
+
+                } catch {
+                    print(error)
+                    group.leave()
+                }
+            }
+            task.resume()
+        }
+        
+        group.notify(queue: .main) {
+            print("Total length (in seconds): \(totalDuration)")
+            
+            // See if there is enough time to get to the destination by driving:
+            let userTimeInterval = self.endTimeInfo?.timeIntervalSince(self.startTimeInfo as! Date)
+            print ("user time interval: \(userTimeInterval)")
+            let userTimeIntervalDouble = userTimeInterval as! Double
+            
+            if (userTimeIntervalDouble < totalDuration) {
+                //Calculate how much more time is necessary
+                let timeDelta = totalDuration - userTimeIntervalDouble
+                var minuteDelta = Int(timeDelta / 60) + 1
+                
+                let insufficientTimeAlert = UIAlertController(title: "Insufficient Time", message: "No way you can get there that fast! Please provide at least \(minuteDelta) more minutes.", preferredStyle: .alert)
+                insufficientTimeAlert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: {
+                    _ in NSLog("The \"OK\" alert occurred.")
+                }))
+                
+                self.present(insufficientTimeAlert, animated: true, completion: nil)
+            }
+            
+            else {
+                //If all the other checks are alright, then perform the segue
+                self.performSegue(withIdentifier: "unwindToMapViewIdentifier", sender: self)
+            }
+        }
+ 
+    }
+    
+    
     // --------------------
     //MARK: UITextFieldDelegate
     // --------------------
@@ -257,18 +385,5 @@ class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSA
         
         startTimeInfo = startTime.date as NSDate
         endTimeInfo = endTime.date as NSDate
-        
-        //TODO: FIX THIS!  It is buggy.  The alert disappears almost instantaneously.
-        /*
-         if (endTime.date <= startTime.date) {
-         let timeAlert = UIAlertController(title: "Time Error", message: "The end time must be greater than the start time.", preferredStyle: .alert)
-         timeAlert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: {
-         _ in NSLog("The \"OK\" alert occurred.")
-         }))
-         
-         self.present(timeAlert, animated: true, completion: nil)
-         }
-         */
     }
-
 }
