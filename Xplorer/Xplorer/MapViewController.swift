@@ -67,6 +67,9 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let result = resultsData[indexPath.row]
         
+        //Get type information
+        let types = result.types
+        
         //Check if the marker is already on the map, if so: remove it
         let position = result.coordinate.coordinate
         for marker:GMSMarker in markers {
@@ -78,6 +81,11 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                     (item.position.latitude == position.latitude) && (item.position.longitude == position.longitude)
                 })
                 if(index! > 0) {
+                    //Get the type information and update free time label
+                    let timeToBeAdded = returnPOITimeEstimate(types: types)
+                    self.freeTime = self.freeTime + timeToBeAdded
+                    self.prepareFlexibleTime(seconds: freeTime)
+                    
                     marker.map = nil
                     markers.remove(at: index!)
                     print("Number of items in markers after removal: \(markers.count)")
@@ -92,28 +100,43 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             }
         }
         
-        //Else, create marker to put on map
-        let marker = GMSMarker()
-        marker.position = result.coordinate.coordinate
-        marker.title = result.name
-        marker.snippet = result.name
-        marker.icon = GMSMarker.markerImage(with: UIColor.init(red: 0.192, green: 0.294, blue:0.4 , alpha: 1.0) ) // 0.192, 0.294, 0.4
-        
-        marker.appearAnimation = .pop
-        marker.map = mapView
-        markers.append(marker)
-        
-        for polyline in polylines {
-            polyline.map = nil
+        //Else, create marker to put on map if the user has enough time
+        let subtractedTime = returnPOITimeEstimate(types: types)
+        let timeLeft = freeTime - subtractedTime
+        if(timeLeft > 0) {
+            let marker = GMSMarker()
+            marker.position = result.coordinate.coordinate
+            marker.title = result.name
+            marker.snippet = result.name
+            marker.icon = GMSMarker.markerImage(with: UIColor.init(red: 0.192, green: 0.294, blue:0.4 , alpha: 1.0) ) // 0.192, 0.294, 0.4
+            
+            marker.appearAnimation = .pop
+            marker.map = mapView
+            markers.append(marker)
+            
+            for polyline in polylines {
+                polyline.map = nil
+            }
+            polylines.removeAll()
+            updateMapZoom()
+            updateMapPolyline()
+            
+            //Update flexible time label
+            freeTime = timeLeft
+            self.prepareFlexibleTime(seconds: freeTime)
         }
-        polylines.removeAll()
-        updateMapZoom()
-        updateMapPolyline()
         
-        //Make sure to update remaining flexible time
-        //Subtract off time due to the type of POI selected
-        let types = result.types
-        var subtractedTime = returnPOITimeEstimate(types: types)
+        else {
+            //Do not add the marker and polyline
+            //Display alert instead
+            
+            let notEnoughTimeAlert = UIAlertController(title: "Not Enough Time!", message: "Your schedule looks pretty full! Time to get some directions!", preferredStyle: .alert)
+            notEnoughTimeAlert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: {
+                _ in NSLog("The \"OK\" alert occurred.")
+            }))
+            
+            self.present(notEnoughTimeAlert, animated: true, completion: nil)
+        }
         
     }
     
@@ -132,6 +155,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     var startLocation: CLLocationCoordinate2D = CLLocationCoordinate2D()
     var endLocation: CLLocationCoordinate2D = CLLocationCoordinate2D()
     var polylines: [GMSPolyline] = []
+    var freeTime: Int = 0
     
     @IBOutlet weak var tripPlanning: UIBarButtonItem!
     
@@ -282,6 +306,11 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             timeEstimate = 60*60
         }
             
+        else if(types.contains("bar") && types.contains("restaurant")) {
+            //Probably will spend 2 hours in a bar with restaurant: 60 seconds per minute * 60 minutes per hour * 2 hours
+            timeEstimate = 60*60*2
+        }
+            
         else if(types.contains("bar")) {
             //Probably will spend 2 hours in a bar: 60 seconds per minute * 60 minutes per hour * 2 hours
             timeEstimate = 60*60*2
@@ -367,7 +396,6 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
      - Returns: void
      
      */
-    
     @IBAction func unwindToMapView(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? TimeAndLocationViewController {
             // Before getting the start and end place, remove any previous markers that were on the map
@@ -402,6 +430,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             
             // Set up initial time for flexibleTime
             let seconds = Int(sourceViewController.userTimeIntervalDouble - sourceViewController.totalDuration)
+            freeTime = seconds
             self.prepareFlexibleTime(seconds: seconds)
             //TODO: This time will have to be updated as the user adds or removes POIs from travel plan
             
@@ -590,7 +619,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                     if let dictionaryResult = result as? NSDictionary {
                         let placeID = dictionaryResult["id"]
                         let name = dictionaryResult["name"]
-                        var types = dictionaryResult["types"] as! Array<String>
+                        let types = dictionaryResult["types"] as! Array<String>
                         let geometry = dictionaryResult["geometry"] as? NSDictionary
                         let location = geometry!["location"] as? NSDictionary
                         let latitude = location!["lat"]
