@@ -158,12 +158,11 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     var freeTime: Int = 0
     
     @IBOutlet weak var tripPlanning: UIBarButtonItem!
-    
+    @IBOutlet weak var interestsBarButton: UIBarButtonItem!
     @IBOutlet weak var POIList: UITableView!
-    
-    
     @IBOutlet weak var directionsButton: UIButton!
     @IBOutlet weak var flexibleTime: UILabel!
+    
     //In case the location preferences have not been set, this is the location of Apple headquarters
     let defaultLocation = CLLocation(latitude: 37.33182, longitude: -122.03118)
 
@@ -221,6 +220,12 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                         NSAttributedStringKey.foregroundColor: UIColor.white,
                         NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .bold)
                         ], for: .normal)
+        
+        // Change the Interest bar button item (left bar button in map view)
+        interestsBarButton.setTitleTextAttributes([
+            NSAttributedStringKey.foregroundColor: UIColor.white,
+            NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .bold)
+            ], for: .normal)
         
         // reset location to my location when the button is pressed
         mapView.settings.myLocationButton = true

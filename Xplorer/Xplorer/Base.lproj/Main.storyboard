@@ -85,6 +85,11 @@
                     </view>
                     <navigationItem key="navigationItem" id="4FB-dy-5Wt">
                         <nil key="title"/>
+                        <barButtonItem key="leftBarButtonItem" title="Interests" id="OAJ-Mp-Zdr">
+                            <connections>
+                                <segue destination="gvu-r8-agj" kind="presentation" id="GyH-Vw-U06"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Plan Your Trip" id="xcQ-hg-etr">
                             <connections>
                                 <segue destination="GfY-ga-mEs" kind="presentation" id="0To-et-28w"/>
@@ -95,6 +100,7 @@
                         <outlet property="POIList" destination="wCi-7r-EeO" id="8Px-qb-V9Z"/>
                         <outlet property="directionsButton" destination="NSR-Uy-cr4" id="bKw-vy-Vtj"/>
                         <outlet property="flexibleTime" destination="qs5-ZP-tRG" id="tiy-TN-rmi"/>
+                        <outlet property="interestsBarButton" destination="OAJ-Mp-Zdr" id="ag1-mn-tvK"/>
                         <outlet property="tripPlanning" destination="xcQ-hg-etr" id="sev-BU-tAH"/>
                     </connections>
                 </viewController>
@@ -401,4 +407,7 @@
         <image name="garden_highlight.png" width="336" height="314"/>
         <image name="main_image.png" width="1125" height="2001"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="GyH-Vw-U06"/>
+    </inferredMetricsTieBreakers>
 </document>
