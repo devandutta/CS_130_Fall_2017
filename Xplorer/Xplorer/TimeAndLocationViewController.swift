@@ -302,6 +302,8 @@ class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSA
             print("Total length (in seconds): \(totalDuration)")
             
             // See if there is enough time to get to the destination by driving:
+            self.startTimeInfo = self.startTime.date as NSDate
+            self.endTimeInfo = self.endTime.date as NSDate
             let userTimeInterval = self.endTimeInfo?.timeIntervalSince(self.startTimeInfo as! Date)
             print ("user time interval: \(userTimeInterval)")
             let userTimeIntervalDouble = userTimeInterval as! Double
