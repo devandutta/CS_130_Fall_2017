@@ -23,123 +23,46 @@ import GooglePlaces
  *  `placesClient`:         a GMSPlacesClient variable so that we can make use of the Google Places API.
  *  `zoomLevel`:            indicates the zoom level of the map.
  *  `appDelegate`:          a reference back to the app's AppDelegate object.
+ *  `markers`:              an array of GMSMarker objects that contain the markers on the map.
+ *  `resultsReturned`:      The array of results returned by the nearby place lookup in dictionary form.
+ *  `resultsData`:          The array of PlaceData objects for the returned POI results.
+ *  `startLocation`:        CLLocationCoordinate2D that stores the user's start location.
+ *  `endLocation`:          CLLocationCoordinate2D that stores the user's end location.
+ *  `polylines`:            an array of GMSPolyline objects that represent the drawn routes on the map when the user selects POIs.
+ *  `freeTime`:             an Int that represents how much more flexible time the user has to add POIs to his/her route.
  *  `defaultLocation`:      if the app is running in simulator mode, or if the user has not accepted location preferences, the map begins at Apple's headquarters.
  
- *  `POIList`:              The table list of POIs for the user to select
- *  `resultsReturned`:      The array of results returned by the nearby place lookup in dictionary form
- *  `resultsData`:          The array of PlaceData objects for the returned POI results
- 
- *  `startLocation`:        CLLocationCoordinate2D that stores the user's start location
- *  `endLocation`:          CLLocationCoordinate2D that stores the user's end location
+ IBOutlets:
+ *  `@IBOutlet tripPlanning`:           the right UIBarButtonItem on the navigation bar in the main map view that takes the user to the TimeAndLocationViewController.
+ *  `@IBOutlet interestsBarButton`:     the left UIBarButtonItem on the navigation bar in the main map view that takes the user to the InterestViewController.
+ *  `@IBOutlet POIList`:                the UITableView that is displayed containing possible POIs.
+ *  `@IBOutlet directionsButton`:       the UIButton to take the user to Google Maps.
+ *  `@IBOutlet flexibleTime`:           the UILabel that shows the user how much flexible time is remaining.
  
  Navigation:
- *  override func prepare (for segue: UIStoryboardSegue, sender: Any?): This method lets you prepare the view controller before it's presented
+ *  override func prepare (for segue: UIStoryboardSegue, sender: Any?): This method lets you prepare the view controller before it's presented.
  
  Actions:
  *  @IBAction func unwindToMapView(sender: UIStoryboardSegue): This method allows the TimeAndLocationViewController to unwind to this view controller.
+ *  @IBAction func openGoogleMaps(_ sender: UIButton):         This method opens Google Maps once the user has finalized his/her POIs.
  
  Additional methods:
- addMarker(place: GMSPlace!, type: String): This method adds a marker to the map.
+ *  override func viewDidLoad():                        This method specifies how to load the view.
+ *  override func didReceiveMemoryWarning():            This method specifies what to do when memory warnings occur.
+ *  func prepareFlexibleTime(seconds: Int):             This method updates the flexibleTime label.
+ *  func returnPOITimeEstimate(types: [String]) -> Int: This method returns the time estimates for different POI types.
+ *  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int:    This method returns the number of elements in a section of a UITableView.
+ *  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell :   This method is used to populate the cells of the table.
+ *  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath):  This method handles user selection of a cell in the table.
+ *  addMarker(place: GMSPlace!, type: String):  This method adds a marker to the map.
+ *  func updateMapZoom():                       This method updates the zoom of the map to contain all the markers.
+ *  func updateMapPolyline():                   This method redraws the optimized route through the POIs.
  
  Delegates:
  *  CLLocationManagerDelegate:  The MapViewController has to implement the CLLocationManagerDelegate.
  */
 
 class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return resultsReturned.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PlaceCell", for: indexPath as IndexPath) as! POITableViewCell
-        
-        let result = resultsReturned[indexPath.row] as? NSDictionary
-        cell.placeName.text = (result!["name"]) as? String
-        cell.address.text = (result!["vicinity"]) as? String
-        
-        // Do price calculations
-        let priceNumber = (result!["price_level"]) as? Int ?? 2
-        var priceDict = [1:"$", 2:"$$", 3:"$$$", 4:"$$$$"]
-        cell.price.text = priceDict[priceNumber]
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let result = resultsData[indexPath.row]
-        
-        //Get type information
-        let types = result.types
-        
-        //Check if the marker is already on the map, if so: remove it
-        let position = result.coordinate.coordinate
-        for marker:GMSMarker in markers {
-            if ((position.latitude == marker.position.latitude) && (position.longitude == marker.position.longitude)) {
-                print(marker)
-                print("Number of items in markers before removal: \(markers.count)")
-                
-                let index = markers.index(where: { (item) -> Bool in
-                    (item.position.latitude == position.latitude) && (item.position.longitude == position.longitude)
-                })
-                if(index! > 0) {
-                    //Get the type information and update free time label
-                    let timeToBeAdded = returnPOITimeEstimate(types: types)
-                    self.freeTime = self.freeTime + timeToBeAdded
-                    self.prepareFlexibleTime(seconds: freeTime)
-                    
-                    marker.map = nil
-                    markers.remove(at: index!)
-                    print("Number of items in markers after removal: \(markers.count)")
-                    
-                    for polyline in polylines {
-                        polyline.map = nil
-                    }
-                    polylines.removeAll()
-                    updateMapPolyline()
-                    return
-                }
-            }
-        }
-        
-        //Else, create marker to put on map if the user has enough time
-        let subtractedTime = returnPOITimeEstimate(types: types)
-        let timeLeft = freeTime - subtractedTime
-        if(timeLeft > 0) {
-            let marker = GMSMarker()
-            marker.position = result.coordinate.coordinate
-            marker.title = result.name
-            marker.snippet = result.name
-            marker.icon = GMSMarker.markerImage(with: UIColor.init(red: 0.192, green: 0.294, blue:0.4 , alpha: 1.0) ) // 0.192, 0.294, 0.4
-            
-            marker.appearAnimation = .pop
-            marker.map = mapView
-            markers.append(marker)
-            
-            for polyline in polylines {
-                polyline.map = nil
-            }
-            polylines.removeAll()
-            updateMapZoom()
-            updateMapPolyline()
-            
-            //Update flexible time label
-            freeTime = timeLeft
-            self.prepareFlexibleTime(seconds: freeTime)
-        }
-        
-        else {
-            //Do not add the marker and polyline
-            //Display alert instead
-            
-            let notEnoughTimeAlert = UIAlertController(title: "Not Enough Time!", message: "Your schedule looks pretty full! Time to get some directions!", preferredStyle: .alert)
-            notEnoughTimeAlert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: {
-                _ in NSLog("The \"OK\" alert occurred.")
-            }))
-            
-            self.present(notEnoughTimeAlert, animated: true, completion: nil)
-        }
-        
-    }
-    
     //MARK: Properties
     //TODO: Move all properties above the UITableViewDelegate and UITableViewDataSource definitions
 
@@ -258,11 +181,24 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         
     }
 
+    /**
+     This method is called when the view controller receives a memory warning.
+     
+     - Returns: void
+     */
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
+    /**
+     This method is used to update the time display in the flexible time remaining label.
+     
+     - Parameter seconds: An Int, all we need are the seconds to calculate the hours and minutes for the flexibleTime display
+     
+     - Returns: void
+     
+     */
     func prepareFlexibleTime(seconds: Int) {
         let hours = seconds/3600
         let minutes = (seconds % 3600) / 60
@@ -272,6 +208,25 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         self.view.bringSubview(toFront: flexibleTime)
     }
     
+    /**
+     This method is used to return how much time a user is expected to spend at a type of POI.
+     
+     We performed market research and read consumer reviews to figure out an average for how much time users would spend at:
+     *  Night clubs
+     *  Bars
+     *  Amusement parks
+     *  Aquariums
+     *  Bowling alleys
+     *  Movie theaters
+     *  Zoos
+     *  Parks
+     *  Restaurants
+     
+     - Parameter types: An Array of Strings that designate the types for the current POI.
+     
+     - Returns: Int
+     
+     */
     func returnPOITimeEstimate(types: [String]) -> Int {
         var timeEstimate: Int = 0
         
@@ -333,9 +288,139 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         return timeEstimate
     }
     
+    /**
+     This method is used to calculate the number of rows in a table.
+     
+     - Parameter tableView: A UITableView that contains the table.
+     - Parameter section:   An Int specifying the number of rows in the section.
+     
+     - Returns: Int
+     
+     */
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return resultsReturned.count
+    }
+    
+    /**
+     This method is used to populate the cells of a table. We refer to our POI Array to populate the cells.
+     
+     - Parameter tableView: A UITableView that contains the table.
+     - Parameter indexPath:   An IndexPath specifying the row index.
+     
+     - Returns: UITableViewCell
+     
+     */
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PlaceCell", for: indexPath as IndexPath) as! POITableViewCell
+        
+        let result = resultsReturned[indexPath.row] as? NSDictionary
+        cell.placeName.text = (result!["name"]) as? String
+        cell.address.text = (result!["vicinity"]) as? String
+        
+        // Do price calculations
+        let priceNumber = (result!["price_level"]) as? Int ?? 2
+        var priceDict = [1:"$", 2:"$$", 3:"$$$", 4:"$$$$"]
+        cell.price.text = priceDict[priceNumber]
+        return cell
+    }
+    
+    /**
+     This method is used to handle user selection for a cell of the table.
+     
+     - Parameter tableView: A UITableView that contains the table.
+     - Parameter indexPath: An IndexPath specifying the row index.
+     
+     - Returns: void
+     
+     */
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let result = resultsData[indexPath.row]
+        
+        //Get type information
+        let types = result.types
+        
+        //Check if the marker is already on the map, if so: remove it
+        let position = result.coordinate.coordinate
+        for marker:GMSMarker in markers {
+            if ((position.latitude == marker.position.latitude) && (position.longitude == marker.position.longitude)) {
+                print(marker)
+                print("Number of items in markers before removal: \(markers.count)")
+                
+                let index = markers.index(where: { (item) -> Bool in
+                    (item.position.latitude == position.latitude) && (item.position.longitude == position.longitude)
+                })
+                if(index! > 0) {
+                    //Get the type information and update free time label
+                    let timeToBeAdded = returnPOITimeEstimate(types: types)
+                    self.freeTime = self.freeTime + timeToBeAdded
+                    self.prepareFlexibleTime(seconds: freeTime)
+                    
+                    marker.map = nil
+                    markers.remove(at: index!)
+                    print("Number of items in markers after removal: \(markers.count)")
+                    
+                    for polyline in polylines {
+                        polyline.map = nil
+                    }
+                    polylines.removeAll()
+                    updateMapPolyline()
+                    return
+                }
+            }
+        }
+        
+        //Else, create marker to put on map if the user has enough time
+        let subtractedTime = returnPOITimeEstimate(types: types)
+        let timeLeft = freeTime - subtractedTime
+        if(timeLeft > 0) {
+            let marker = GMSMarker()
+            marker.position = result.coordinate.coordinate
+            marker.title = result.name
+            marker.snippet = result.name
+            marker.icon = GMSMarker.markerImage(with: UIColor.init(red: 0.192, green: 0.294, blue:0.4 , alpha: 1.0) ) // 0.192, 0.294, 0.4
+            
+            marker.appearAnimation = .pop
+            marker.map = mapView
+            markers.append(marker)
+            
+            for polyline in polylines {
+                polyline.map = nil
+            }
+            polylines.removeAll()
+            updateMapZoom()
+            updateMapPolyline()
+            
+            //Update flexible time label
+            freeTime = timeLeft
+            self.prepareFlexibleTime(seconds: freeTime)
+        }
+            
+        else {
+            //Do not add the marker and polyline
+            //Display alert instead
+            
+            let notEnoughTimeAlert = UIAlertController(title: "Not Enough Time!", message: "Your schedule looks pretty full! Time to get some directions!", preferredStyle: .alert)
+            notEnoughTimeAlert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: {
+                _ in NSLog("The \"OK\" alert occurred.")
+            }))
+            
+            self.present(notEnoughTimeAlert, animated: true, completion: nil)
+        }
+        
+    }
+    
     
     //MARK: Navigation
     
+    /**
+     This method lets you prepare the view controller before it's presented.
+     
+     - Parameter segue: A UIStoryboardSegue that represents the segue.
+     - Parameter sender: An Any object (any type) that is the sender of the event.
+     
+     - Returns: void
+     
+     */
     //This method lets you prepare the view controller before it's presented
     override func prepare (for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
@@ -343,6 +428,14 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     
     //MARK: Actions
     
+    /**
+     This method opens Google Maps for directions once the user has selected their POIs.
+     
+     - Parameter sender: A UIButton object that is the sender of the event.
+     
+     - Returns: void
+     
+     */
     @IBAction func openGoogleMaps(_ sender: UIButton) {
         let originLat = String(describing: startLocation.latitude)
         let originLong = String(describing: startLocation.longitude)
@@ -679,6 +772,11 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         markers.append(marker)
     }
     
+    /**
+     This function updates the zoom of the map to contain all the markers.
+     
+     - Returns: void
+     */
     func updateMapZoom() {
         let path = GMSMutablePath()
         for marker:GMSMarker in markers {
@@ -691,6 +789,11 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         mapView.animate(with: update)
     }
     
+    /**
+     This function redraws the optimized route through the POIs..
+     
+     - Returns: void
+     */
     func updateMapPolyline() {
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config)
@@ -862,6 +965,17 @@ extension MapViewController: CLLocationManagerDelegate {
     }
 }
 
+/**
+ The PlaceData struct is an object encapsulation of relevant information regarding place objects.
+ 
+ 
+ Properties:
+ *  `name`:             a String representing the name of the place.
+ *  `id`:               a String representing the Google Places id of the place.
+ *  `coordinate`:       a CLLocation that represents the coordinates of the place.
+ *  `types`:            an Array of Strings that hold the POI types for the place.
+
+ */
 struct PlaceData {
     var name: String
     var id: String
