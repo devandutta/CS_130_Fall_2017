@@ -9,6 +9,17 @@
 import Foundation
 import UIKit
 
+/**
+ The POITableCell defines how each cell in the POI table is constructed.
+ 
+ POITableCell extends UIViewController.
+ 
+ 
+ Properties:
+ *  `placeName`:            a UILabel that displays the place information.
+ *  `address`:              a UILabel that displays the address of the POI.
+ *  `price`:                a UILabel that displays a relative price in some number of dollar signs from 1 to 4, inclusive
+ */
 class POITableViewCell: UITableViewCell {
     
     @IBOutlet weak var placeName: UILabel!
