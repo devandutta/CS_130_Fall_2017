@@ -17,6 +17,11 @@ import GooglePlaces
  Note about properties:
  *  `window` is a UIWindow that specifies the window space of the application
  *  `locationManager` is necessary to start and stop the delivery of location-related events to the app
+ *  `GMSMapServicesKey` is the Google Maps iOS API key for our project
+ *  `GMSPlacesServicesKey` is the Google Places iOS API key for our project
+ *  `GMSPlacesServicesKey_alternate` is an alternate Google Places iOS API key for our project (we were running up API quotas)
+ *  `GMSPlacesWebServicesKey` is the Google Places Web API key for our project
+ *  `GMSDirectionsKey` is the Google Directions Web API key for our project
  */
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -37,7 +42,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /**
      This method is used for when the application starts up.
      
-     We provide the GMSServices and GMSPlacesClientAPI keys here.
+     We provide the GMSMapServices and GMSPlacesClient API keys here.
+     
+     We also control whether the interest view controller is loaded first after the splashscreen (user has just installed app)
      
      - Parameter application: The centralized point of control and coordination for iOS apps.  There is one instance of a UIApplication for every app.
      - Parameter launchOptions: Any specified launch options.
