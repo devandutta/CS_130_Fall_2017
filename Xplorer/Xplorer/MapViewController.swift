@@ -342,10 +342,10 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         url += "&waypoints="
         url += waypointsString
         
-        print(url)
+        //print(url)
         
         let formattedURL = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-        print(formattedURL)
+        //print(formattedURL)
         let urlQuery = URL(string: formattedURL!)!
         UIApplication.shared.open(urlQuery, options: [:], completionHandler: nil)
     }
@@ -599,7 +599,6 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                         self.resultsData.append(placeInfo)
                         
                         print("name: \(String(describing: name))")
-                        print(dictionaryResult)
                         
                     }
                 }
@@ -687,10 +686,10 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         url += waypointsString
         url += "&key=\(appDelegate.GMSDirectionsKey)"
         
-        print(url)
+        //print(url)
         
         let formattedURL = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-        print(formattedURL)
+        //print(formattedURL)
         let urlQuery = URL(string: formattedURL!)!
         
         //Query Google Directions API to get polyline back:
@@ -705,7 +704,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                         return
                     }
                     
-                    print("Is valid JSON: \(data)")
+                    //print("Is valid JSON: \(data)")
 
                     
                     let json = (try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary)!

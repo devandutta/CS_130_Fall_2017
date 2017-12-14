@@ -59,7 +59,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // show the onboarding screen
             vc = storyboard.instantiateViewController(withIdentifier: "StartViewController")
         } else {
-            print(UserDefaults.standard.value(forKey: "interests")!)
+            //print(UserDefaults.standard.value(forKey: "interests")!)
             vc = storyboard.instantiateInitialViewController()!
         }
         

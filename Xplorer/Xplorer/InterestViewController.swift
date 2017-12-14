@@ -54,7 +54,7 @@ class InterestViewController: UIViewController {
     }
     @IBAction func continuePressed(_ sender: UIButton) {
         UserDefaults.standard.set(interests, forKey: "interests")
-        print(UserDefaults.standard.value(forKey: "interests")!)
+        //print(UserDefaults.standard.value(forKey: "interests")!)
         performSegue(withIdentifier: "toMainSegue", sender: self)
     }
 }

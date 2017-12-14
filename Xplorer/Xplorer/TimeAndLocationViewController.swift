@@ -254,7 +254,7 @@ class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSA
         print(url)
         
         let formattedURL = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-        print(formattedURL)
+        //print(formattedURL)
         let urlQuery = URL(string: formattedURL!)!
         
         //Query Google Directions API to get time back:
@@ -270,12 +270,11 @@ class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSA
                         return
                     }
                     
-                    print("Is valid JSON: \(data)")
+                    //print("Is valid JSON: \(data)")
                     
                     let json = (try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary)!
                     let routes = json["routes"] as! NSArray
                     let route1 = routes[0] as! NSDictionary
-                    print(route1)
                     let legs = route1["legs"] as! NSArray
                     
                     for leg in legs {
