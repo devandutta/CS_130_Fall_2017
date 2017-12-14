@@ -45,6 +45,7 @@ class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSA
     var endTimeInfo: NSDate?
     var userTimeIntervalDouble: Double = 0
     var totalDuration: Double = 0
+    var cancelPressed: Bool = false
     
     // Outlets
     @IBOutlet weak var startLocation: UITextField!
@@ -52,6 +53,7 @@ class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSA
     @IBOutlet weak var startTime: UIDatePicker!
     @IBOutlet weak var endTime: UIDatePicker!
     @IBOutlet weak var doneButton: UIBarButtonItem!
+    @IBOutlet weak var cancelButton: UIBarButtonItem!
     
     // Constants and variables
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -88,6 +90,8 @@ class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSA
             NSAttributedStringKey.foregroundColor: UIColor.white,
             NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .bold)
         ]
+        
+        self.cancelPressed = false
         
     }
 
@@ -190,6 +194,12 @@ class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSA
     @IBAction func openSearchAddressStartPlace(_ sender: UITextField) {
         handleAutocomplete(sender: sender)
     }
+    
+    @IBAction func cancelButtonPressed(_ sender: UIBarButtonItem) {
+        self.cancelPressed = true
+        self.performSegue(withIdentifier: "unwindToMapViewIdentifier", sender: self)
+    }
+    
     
     /**
      This method is the action handler (and is specified with @IBAction) for the endLocation UITextField.

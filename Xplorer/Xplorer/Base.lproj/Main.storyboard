@@ -192,6 +192,11 @@
                         <viewLayoutGuide key="safeArea" id="7n1-Hw-NCv"/>
                     </view>
                     <navigationItem key="navigationItem" title="Enter Time and Location" id="B7I-5n-QYA">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="nLJ-bK-x8Z">
+                            <connections>
+                                <action selector="cancelButtonPressed:" destination="DKo-oc-eUX" id="mqd-8n-mpy"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="bjA-dQ-Tdc">
                             <connections>
                                 <action selector="doneButtonPressed:" destination="DKo-oc-eUX" id="311-Bg-W96"/>
@@ -199,6 +204,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="cancelButton" destination="nLJ-bK-x8Z" id="Bca-sj-N4z"/>
                         <outlet property="doneButton" destination="bjA-dQ-Tdc" id="6Dh-m5-QQa"/>
                         <outlet property="endLocation" destination="VgT-ss-GU2" id="Foz-JB-hho"/>
                         <outlet property="endTime" destination="HDA-3a-vvK" id="iNU-Be-WM1"/>

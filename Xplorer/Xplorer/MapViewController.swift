@@ -403,6 +403,14 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
      */
     @IBAction func unwindToMapView(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? TimeAndLocationViewController {
+            
+            //Check first if the cancel button was pressed on the TimeAndLocationViewController:
+            //If so, then just return and do nothing:
+            let userCanceled = sourceViewController.cancelPressed
+            if (userCanceled == true) {
+                return
+            }
+            
             // Before getting the start and end place, remove any previous markers that were on the map
             for marker in markers {
                 marker.map = nil
