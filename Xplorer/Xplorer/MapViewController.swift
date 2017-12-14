@@ -403,6 +403,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             // Set up initial time for flexibleTime
             let seconds = Int(sourceViewController.userTimeIntervalDouble - sourceViewController.totalDuration)
             self.prepareFlexibleTime(seconds: seconds)
+            //TODO: This time will have to be updated as the user adds or removes POIs from travel plan
             
             //Put start and end markers on map
             addMarker(place: startPlace, type: "start")
