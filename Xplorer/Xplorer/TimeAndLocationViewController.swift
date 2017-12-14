@@ -43,6 +43,8 @@ class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSA
     var endPlace: GMSPlace?
     var startTimeInfo: NSDate?
     var endTimeInfo: NSDate?
+    var userTimeIntervalDouble: Double = 0
+    var totalDuration: Double = 0
     
     // Outlets
     @IBOutlet weak var startLocation: UITextField!
@@ -257,8 +259,7 @@ class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSA
         
         //Query Google Directions API to get time back:
         //totalDuration is the total duration in seconds of the journey
-        var totalDuration: Double
-        totalDuration = 0
+        self.totalDuration = 0
         let group = DispatchGroup()
         group.enter()
         DispatchQueue.main.async {
@@ -284,7 +285,7 @@ class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSA
                             let step = step as! NSDictionary
                             let duration = step["duration"] as! NSDictionary
                             let value = duration["value"] as! Int
-                            totalDuration += Double(value)
+                            self.totalDuration += Double(value)
                         }
                     }
                     
@@ -299,18 +300,18 @@ class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSA
         }
         
         group.notify(queue: .main) {
-            print("Total length (in seconds): \(totalDuration)")
+            print("Total length (in seconds): \(self.totalDuration)")
             
             // See if there is enough time to get to the destination by driving:
             self.startTimeInfo = self.startTime.date as NSDate
             self.endTimeInfo = self.endTime.date as NSDate
             let userTimeInterval = self.endTimeInfo?.timeIntervalSince(self.startTimeInfo as! Date)
             print ("user time interval: \(userTimeInterval)")
-            let userTimeIntervalDouble = userTimeInterval as! Double
+            self.userTimeIntervalDouble = userTimeInterval as! Double
             
-            if (userTimeIntervalDouble < totalDuration) {
+            if (self.userTimeIntervalDouble < self.totalDuration) {
                 //Calculate how much more time is necessary
-                let timeDelta = totalDuration - userTimeIntervalDouble
+                let timeDelta = self.totalDuration - self.userTimeIntervalDouble
                 var minuteDelta = Int(timeDelta / 60) + 1
                 
                 let insufficientTimeAlert = UIAlertController(title: "Insufficient Time", message: "No way you can get there that fast! Please provide at least \(minuteDelta) more minutes.", preferredStyle: .alert)

@@ -109,6 +109,12 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         polylines.removeAll()
         updateMapZoom()
         updateMapPolyline()
+        
+        //Make sure to update remaining flexible time
+        //Subtract off time due to the type of POI selected
+        let types = result.types
+        var subtractedTime = returnPOITimeEstimate(types: types)
+        
     }
     
     //MARK: Properties
@@ -131,6 +137,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     
     @IBOutlet weak var POIList: UITableView!
     
+    @IBOutlet weak var flexibleTime: UILabel!
     //In case the location preferences have not been set, this is the location of Apple headquarters
     let defaultLocation = CLLocation(latitude: 37.33182, longitude: -122.03118)
 
@@ -207,11 +214,83 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         //Make the POI list hidden initially
         POIList.isHidden = true
         
+        //Make the flexibleTime label hidden initially and set its parameters
+        flexibleTime.numberOfLines = 2
+        flexibleTime.isHidden = true
+        flexibleTime.numberOfLines = 2
+        flexibleTime.layer.borderColor = UIColor.darkGray.cgColor
+        flexibleTime.layer.borderWidth = 3.0
+        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func prepareFlexibleTime(seconds: Int) {
+        let hours = seconds/3600
+        let minutes = (seconds % 3600) / 60
+        let timeText = "\(hours) hours, \(minutes) minutes"
+        self.flexibleTime.text = timeText
+        self.flexibleTime.isHidden = false
+        self.view.bringSubview(toFront: flexibleTime)
+    }
+    
+    func returnPOITimeEstimate(types: [String]) -> Int {
+        var timeEstimate: Int = 0
+        
+        //It is possible for a bar to also be a night club, but if so, you would spend more time there
+        if(types.contains("night_club") && types.contains("bar")) {
+            //Probably will spend 4 hours at a night club: 60 seconds per minute * 60 minutes per hour * 4 hours
+            timeEstimate = 60*60*4
+        }
+            
+        else if (types.contains("amusement_park")) {
+            //You would spend 8 hours in an amusement park: 60 seconds per minute * 60 minutes per hour * 8 hours
+            timeEstimate = 60*60*8
+        }
+            
+        else if(types.contains("aquarium")) {
+            //You would spend 4 hours in an aquarium: 60 seconds per minute * 60 minutes per hour * 4 hours
+            timeEstimate = 60*60*4
+        }
+            
+        else if(types.contains("bowling_alley")) {
+            //You would spend 2 hours in a bowling alley: 60 seconds per minute * 60 minutes per hour * 2 hours
+            timeEstimate = 60*60*2
+        }
+            
+        else if(types.contains("movie_theater")) {
+            //Most movies will be 3 hours or less, so we go with 3 hours here: 60 seconds per minute * 60 minutes per hour * 3 hours
+            timeEstimate = 60*60*3
+        }
+            
+        else if(types.contains("zoo")) {
+            //You would spend 4 hours in a zoo: 60 seconds per minute * 60 minutes per hour * 4 hours
+            timeEstimate = 60*60*4
+        }
+            
+        else if(types.contains("park")) {
+            //You would spend an hour in a park: 60 seconds per minute * 60 minutes per hour * 1 hour
+            timeEstimate = 60*60
+        }
+            
+        else if(types.contains("bar")) {
+            //Probably will spend 2 hours in a bar: 60 seconds per minute * 60 minutes per hour * 2 hours
+            timeEstimate = 60*60*2
+        }
+            
+        else if(types.contains("restaurant")) {
+            //Probably will spend 1 hour in a restaurant: 60 seconds per minute * 60 minutes per hour * 1 hour
+            timeEstimate = 60*60
+        }
+        else {
+            timeEstimate = 0
+            print("No recognizable POI types")
+        }
+        
+        return timeEstimate
     }
     
     
@@ -271,6 +350,10 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             
             print("startTime: \(startTime!)")
             print("endTime: \(endTime!)")
+            
+            // Set up initial time for flexibleTime
+            let seconds = Int(sourceViewController.userTimeIntervalDouble - sourceViewController.totalDuration)
+            self.prepareFlexibleTime(seconds: seconds)
             
             //Put start and end markers on map
             addMarker(place: startPlace, type: "start")
@@ -457,11 +540,12 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                     if let dictionaryResult = result as? NSDictionary {
                         let placeID = dictionaryResult["id"]
                         let name = dictionaryResult["name"]
+                        var types = dictionaryResult["types"] as! Array<String>
                         let geometry = dictionaryResult["geometry"] as? NSDictionary
                         let location = geometry!["location"] as? NSDictionary
                         let latitude = location!["lat"]
                         let longitude = location!["lng"]
-                        let placeInfo = PlaceData(name: name as! String, id: placeID as! String, coordinate: CLLocation(latitude: latitude as! CLLocationDegrees, longitude: longitude as! CLLocationDegrees))
+                        let placeInfo = PlaceData(name: name as! String, id: placeID as! String, coordinate: CLLocation(latitude: latitude as! CLLocationDegrees, longitude: longitude as! CLLocationDegrees), types: types)
                         
                         self.resultsData.append(placeInfo)
                         
@@ -578,6 +662,22 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                     let overviewPolyline = route1["overview_polyline"] as? NSDictionary
                     polylinePoints = overviewPolyline!["points"] as! String
                     
+                    //Update time estimates
+                    let legs = route1["legs"] as! NSArray
+                    
+                    for leg in legs {
+                        let legDict = leg as! NSDictionary
+                        let steps = legDict["steps"] as! NSArray
+                        for step in steps {
+                            let step = step as! NSDictionary
+                            let duration = step["duration"] as! NSDictionary
+                            let value = duration["value"] as! Int
+                            
+                            //TODO: Add to some total travel time here
+                            //self.totalTravelTime += Double(value)
+                        }
+                    }
+                    
                     group.leave()
                     return
                 } catch {
@@ -597,11 +697,18 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             polyline.strokeColor = UIColor.init(red: 0.58, green: 0.624, blue:0.71 , alpha: 1.0) // 0.58, 0.624, 0.71
 
             polyline.map = self.mapView
+            
+            for polyline in self.polylines {
+                polyline.map = nil
+            }
+            self.polylines.removeAll()
             self.polylines.append(polyline)
             
             let bounds = GMSCoordinateBounds.init(path: path!)
             let update = GMSCameraUpdate.fit(bounds, withPadding: 110)
             self.mapView.animate(with: update)
+            
+            
         }
     }
 }
@@ -666,5 +773,6 @@ struct PlaceData {
     var name: String
     var id: String
     var coordinate: CLLocation
+    var types: [String]
 }
 

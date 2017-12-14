@@ -34,7 +34,6 @@ class InterestViewController: UIViewController {
         interests.append("aquarium")
         interests.append("bowling_alley")
         interests.append("movie_theater")
-        interests.append("night_club")
         interests.append("zoo")
     }
     
