@@ -23,22 +23,35 @@ class InterestViewController: UIViewController {
     
     @IBAction func select_Entertainment(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
-        interests.append("Entertainment")
+        
+        /*
+         Append only the POI types that can be directly queried in Google Places Web API
+         "Entertainment" is incredibly vague, so we will consider:
+         "amusement_park", "aquarium", "bowling_alley", "movie_theater", "night_club", "zoo"
+         */
+        
+        interests.append("amusement_park")
+        interests.append("aquarium")
+        interests.append("bowling_alley")
+        interests.append("movie_theater")
+        interests.append("night_club")
+        interests.append("zoo")
     }
     
     @IBAction func selectGardens(_ sender: UIButton) {
          sender.isSelected = !sender.isSelected
-        interests.append("Gardens")
+        interests.append("park")
     }
     
-    @IBAction func selectHistory(_ sender: UIButton) {
-         sender.isSelected = !sender.isSelected
-         interests.append("History")
+    @IBAction func selectDrinks(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+        interests.append("bar")
+        interests.append("night_club")
     }
     
     @IBAction func selectFood(_ sender: UIButton) {
          sender.isSelected = !sender.isSelected
-        interests.append("Food")
+        interests.append("restaurant")
     }
     @IBAction func continuePressed(_ sender: UIButton) {
         UserDefaults.standard.set(interests, forKey: "interests")

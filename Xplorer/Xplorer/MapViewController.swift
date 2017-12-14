@@ -52,6 +52,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PlaceCell", for: indexPath as IndexPath) as! POITableViewCell
+        
         let result = resultsReturned[indexPath.row] as? NSDictionary
         cell.placeName.text = (result!["name"]) as? String
         cell.address.text = (result!["vicinity"]) as? String
@@ -324,7 +325,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             updateMapZoom()
              */
             
-            //Now display POIs:
+            //Now get the POIs:
             let centerLat = String(describing: center.latitude)
             let centerLong = String(describing: center.longitude)
 
@@ -336,6 +337,89 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             let radius = endToEndDistanceMeters / 2
             print("radius: \(radius)")
             let radiusString = String(describing: radius)
+            
+            /*
+                The following process will have to be repeated for all the user's selected POI types:
+ 
+                1. Query for POIs of that type
+                2. Add the top 5 POIs of the queried type to the POIList
+             
+            */
+            
+            let interests = UserDefaults.standard.array(forKey: "interests")! as Array
+            //Remove duplicates:
+            var uniqueInterests = Set<String>()
+            for interest in interests {
+                let interest = interest as! String
+                uniqueInterests.insert(interest)
+            }
+            
+            /* This approach does not quite work, will be coming back to it
+            for interest in uniqueInterests {
+                print("Querying for: \(interest)")
+                
+                var urlString = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(centerLat),\(centerLong)&radius=\(radiusString)&type=\(interest)&key=\(appDelegate.GMSPlacesWebServicesKey)"
+                
+                let url = URL(string: urlString)
+                let request = URLRequest(url: url!)
+                let config = URLSessionConfiguration.default
+                let session = URLSession(configuration: config)
+                
+                let group = DispatchGroup()
+                group.enter()
+                DispatchQueue.main.async {
+                    let task = session.dataTask(with: request) {data, response, error in
+                        do {
+                            let json = (try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary)!
+                            let results = json["results"] as? NSArray
+                            
+                            for place:Any in results! {
+                                self.resultsReturned.add(place)
+                            }
+                            group.leave()
+                            return
+                        } catch {
+                            print(error)
+                            group.leave()
+                            return
+                        }
+                    }
+                    task.resume()
+                }
+                
+                group.notify(queue: .main) {
+                    print("Here are the returned results:")
+                    //resultsReturned is an array of dictionaries
+                    for result:Any in self.resultsReturned {
+                        if let dictionaryResult = result as? NSDictionary {
+                            let placeID = dictionaryResult["id"]
+                            let name = dictionaryResult["name"]
+                            let geometry = dictionaryResult["geometry"] as? NSDictionary
+                            let location = geometry!["location"] as? NSDictionary
+                            let latitude = location!["lat"]
+                            let longitude = location!["lng"]
+                            let placeInfo = PlaceData(name: name as! String, id: placeID as! String, coordinate: CLLocation(latitude: latitude as! CLLocationDegrees, longitude: longitude as! CLLocationDegrees))
+                            
+                            if self.resultsData.contains(where: {$0.id == (placeID as! String)}) {
+                                //Do nothing
+                            }
+                            else {
+                                self.resultsData.append(placeInfo)
+                            }
+                            
+                            print("name: \(String(describing: name))")
+                            print(dictionaryResult)
+                            
+                        }
+                    }
+                    
+                    self.POIList.reloadData()
+                    self.POIList.isHidden = false
+                    self.view.bringSubview(toFront: self.POIList)
+                }
+                
+            }
+ */
             
             var urlString = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(centerLat),\(centerLong)&radius=\(radiusString)&type=restaurant&key=\(appDelegate.GMSPlacesWebServicesKey)"
             
@@ -390,7 +474,6 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                 self.POIList.reloadData()
                 self.POIList.isHidden = false
                 self.view.bringSubview(toFront: self.POIList)
-                
             }
         }
     }
