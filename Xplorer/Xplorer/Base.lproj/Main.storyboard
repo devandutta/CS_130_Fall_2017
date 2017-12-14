@@ -69,6 +69,14 @@
                                 <nil key="highlightedColor"/>
                                 <color key="shadowColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NSR-Uy-cr4">
+                                <rect key="frame" x="16" y="74" width="97" height="64"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Directions"/>
+                                <connections>
+                                    <action selector="openGoogleMaps:" destination="BYZ-38-t0r" eventType="touchUpInside" id="iMp-sY-W0Z"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <accessibility key="accessibilityConfiguration" identifier="mapVC"/>
@@ -84,6 +92,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="POIList" destination="wCi-7r-EeO" id="8Px-qb-V9Z"/>
+                        <outlet property="directionsButton" destination="NSR-Uy-cr4" id="bKw-vy-Vtj"/>
                         <outlet property="flexibleTime" destination="qs5-ZP-tRG" id="tiy-TN-rmi"/>
                         <outlet property="tripPlanning" destination="xcQ-hg-etr" id="sev-BU-tAH"/>
                     </connections>

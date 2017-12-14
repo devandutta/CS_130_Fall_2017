@@ -137,6 +137,8 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     
     @IBOutlet weak var POIList: UITableView!
     
+    
+    @IBOutlet weak var directionsButton: UIButton!
     @IBOutlet weak var flexibleTime: UILabel!
     //In case the location preferences have not been set, this is the location of Apple headquarters
     let defaultLocation = CLLocation(latitude: 37.33182, longitude: -122.03118)
@@ -217,9 +219,13 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         //Make the flexibleTime label hidden initially and set its parameters
         flexibleTime.numberOfLines = 2
         flexibleTime.isHidden = true
-        flexibleTime.numberOfLines = 2
         flexibleTime.layer.borderColor = UIColor.darkGray.cgColor
         flexibleTime.layer.borderWidth = 3.0
+        
+        //Hide the directions button
+        directionsButton.isHidden = true
+        directionsButton.layer.borderColor = UIColor.darkGray.cgColor
+        directionsButton.layer.borderWidth = 3.0
         
     }
 
@@ -303,6 +309,48 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     
     //MARK: Actions
     
+    @IBAction func openGoogleMaps(_ sender: UIButton) {
+        let originLat = String(describing: startLocation.latitude)
+        let originLong = String(describing: startLocation.longitude)
+        let endLat = String(describing: endLocation.latitude)
+        let endLong = String(describing: endLocation.longitude)
+        var url = "https://www.google.com/maps/dir/?api=1&"
+        url += "origin=\(originLat),\(originLong)"
+        url += "&destination=\(endLat),\(endLong)"
+        
+        //Add waypoints that are not the start nor end
+        var waypointsString = ""
+        for marker:GMSMarker in markers {
+            var latBool: Bool
+            latBool = ((marker.position.latitude != startLocation.latitude) && (marker.position.latitude != endLocation.latitude))
+            var lonBool: Bool
+            lonBool = ((marker.position.longitude != startLocation.longitude) && (marker.position.longitude != endLocation.longitude))
+            
+            //The marker is different from the start and end
+            if ((latBool == true) && (lonBool == true)) {
+                let waypointLatString = String(describing: marker.position.latitude)
+                let waypointLonString = String(describing: marker.position.longitude)
+                waypointsString += "\(waypointLatString),\(waypointLonString)|"
+            }
+            
+        }
+        //Remove last pipe:
+        if (waypointsString.last == "|") {
+            waypointsString.remove(at: waypointsString.index(before: waypointsString.endIndex))
+        }
+        //url += "dir_action=navigate"
+        url += "&waypoints="
+        url += waypointsString
+        
+        print(url)
+        
+        let formattedURL = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        print(formattedURL)
+        let urlQuery = URL(string: formattedURL!)!
+        UIApplication.shared.open(urlQuery, options: [:], completionHandler: nil)
+    }
+    
+    
     /**
      This method is used for the "Done" button in the TimeAndLocationViewController.
      
@@ -319,6 +367,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
      - Returns: void
      
      */
+    
     @IBAction func unwindToMapView(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? TimeAndLocationViewController {
             // Before getting the start and end place, remove any previous markers that were on the map
@@ -558,6 +607,9 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                 self.POIList.reloadData()
                 self.POIList.isHidden = false
                 self.view.bringSubview(toFront: self.POIList)
+                
+                self.directionsButton.isHidden = false
+                self.view.bringSubview(toFront: self.directionsButton)
             }
         }
     }
