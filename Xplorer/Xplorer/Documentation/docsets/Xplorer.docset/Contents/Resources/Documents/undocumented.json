@@ -16,77 +16,70 @@
     },
     {
       "file": "/Users/Devan/Documents/CS 130/CS_130_Fall_2017/Xplorer/Xplorer/MapViewController.swift",
-      "line": 44,
-      "symbol": "MapViewController.currentLocation",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/Devan/Documents/CS 130/CS_130_Fall_2017/Xplorer/Xplorer/MapViewController.swift",
-      "line": 45,
+      "line": 46,
       "symbol": "MapViewController.mapView",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/Devan/Documents/CS 130/CS_130_Fall_2017/Xplorer/Xplorer/MapViewController.swift",
-      "line": 46,
+      "line": 47,
       "symbol": "MapViewController.placesClient",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/Devan/Documents/CS 130/CS_130_Fall_2017/Xplorer/Xplorer/MapViewController.swift",
-      "line": 47,
+      "line": 48,
       "symbol": "MapViewController.zoomLevel",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/Devan/Documents/CS 130/CS_130_Fall_2017/Xplorer/Xplorer/MapViewController.swift",
-      "line": 48,
+      "line": 49,
       "symbol": "MapViewController.appDelegate",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/Devan/Documents/CS 130/CS_130_Fall_2017/Xplorer/Xplorer/MapViewController.swift",
-      "line": 51,
+      "line": 52,
       "symbol": "MapViewController.defaultLocation",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/Devan/Documents/CS 130/CS_130_Fall_2017/Xplorer/Xplorer/MapViewController.swift",
-      "line": 97,
+      "line": 98,
       "symbol": "MapViewController.didReceiveMemoryWarning()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/Devan/Documents/CS 130/CS_130_Fall_2017/Xplorer/Xplorer/MapViewController.swift",
-      "line": 105,
+      "line": 106,
       "symbol": "MapViewController.prepare(for:sender:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/Devan/Documents/CS 130/CS_130_Fall_2017/Xplorer/Xplorer/MapViewController.swift",
-      "line": 188,
+      "line": 194,
       "symbol": "MapViewController.locationManager(_:didUpdateLocations:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/Devan/Documents/CS 130/CS_130_Fall_2017/Xplorer/Xplorer/MapViewController.swift",
-      "line": 205,
+      "line": 211,
       "symbol": "MapViewController.locationManager(_:didChangeAuthorization:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/Devan/Documents/CS 130/CS_130_Fall_2017/Xplorer/Xplorer/MapViewController.swift",
-      "line": 222,
+      "line": 228,
       "symbol": "MapViewController.locationManager(_:didFailWithError:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"

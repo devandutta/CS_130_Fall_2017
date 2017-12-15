@@ -34,7 +34,6 @@ import UIKit
  
  */
 class InterestViewController: UIViewController {
-    @IBOutlet weak var kasf: UIButton!
     var interests : [String] = []
     
     /**

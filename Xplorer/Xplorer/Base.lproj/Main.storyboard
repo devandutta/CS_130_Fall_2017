@@ -357,7 +357,6 @@
                         <viewLayoutGuide key="safeArea" id="KtS-MV-hJ5"/>
                     </view>
                     <connections>
-                        <outlet property="kasf" destination="W28-Uh-ptb" id="ffp-0V-CZN"/>
                         <segue destination="Ygi-IG-i3i" kind="show" identifier="toMainSegue" id="Nqj-Sb-QC1"/>
                     </connections>
                 </viewController>
