@@ -373,6 +373,10 @@
                         <viewLayoutGuide key="safeArea" id="KtS-MV-hJ5"/>
                     </view>
                     <connections>
+                        <outlet property="drinks_btn" destination="053-5o-bcC" id="4iS-Ol-y6l"/>
+                        <outlet property="entertainment_btn" destination="W28-Uh-ptb" id="T2c-Jj-AWn"/>
+                        <outlet property="food_btn" destination="0nQ-RJ-izi" id="eon-Vg-162"/>
+                        <outlet property="gardens_btn" destination="fUE-Vm-bbE" id="798-Yh-DYa"/>
                         <segue destination="Ygi-IG-i3i" kind="show" identifier="toMainSegue" id="Nqj-Sb-QC1"/>
                     </connections>
                 </viewController>

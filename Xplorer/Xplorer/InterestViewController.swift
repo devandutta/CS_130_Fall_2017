@@ -35,7 +35,12 @@ import UIKit
  */
 class InterestViewController: UIViewController {
     var interests : [String] = []
+    var user_selected_interests : [String]  = []
     
+    @IBOutlet weak var drinks_btn: UIButton!
+    @IBOutlet weak var gardens_btn: UIButton!
+    @IBOutlet weak var entertainment_btn: UIButton!
+    @IBOutlet weak var food_btn: UIButton!
     /**
      This method is used for loading the view.
      - Returns: void
@@ -43,7 +48,21 @@ class InterestViewController: UIViewController {
      */
     override func viewDidLoad() {
         super.viewDidLoad()
+        var pressed_buttons = UserDefaults.standard.array(forKey: "user_selected_interests")
         
+        if ((pressed_buttons) != nil) {
+            for button in pressed_buttons!{
+                if(button as! String == "entertainment"){
+                    select_Entertainment(entertainment_btn)
+                } else if (button as! String == "gardens"){
+                    selectGardens(gardens_btn)
+                } else if (button as! String == "drinks") {
+                    selectGardens(drinks_btn)
+                } else if (button as! String == "food") {
+                    selectFood(food_btn)
+                }
+             }
+        }
     }
     
     /**
@@ -82,6 +101,7 @@ class InterestViewController: UIViewController {
         interests.append("bowling_alley")
         interests.append("movie_theater")
         interests.append("zoo")
+        user_selected_interests.append("entertainment")
     }
     
     /**
@@ -99,6 +119,7 @@ class InterestViewController: UIViewController {
     @IBAction func selectGardens(_ sender: UIButton) {
          sender.isSelected = !sender.isSelected
         interests.append("park")
+        user_selected_interests.append("gardens")
     }
     
     /**
@@ -117,6 +138,7 @@ class InterestViewController: UIViewController {
         sender.isSelected = !sender.isSelected
         interests.append("bar")
         interests.append("night_club")
+        user_selected_interests.append("drinks")
     }
     
     /**
@@ -134,6 +156,7 @@ class InterestViewController: UIViewController {
     @IBAction func selectFood(_ sender: UIButton) {
          sender.isSelected = !sender.isSelected
         interests.append("restaurant")
+        user_selected_interests.append("food")
     }
     
     /**
@@ -148,6 +171,7 @@ class InterestViewController: UIViewController {
      */
     @IBAction func continuePressed(_ sender: UIButton) {
         UserDefaults.standard.set(interests, forKey: "interests")
+        UserDefaults.standard.set(user_selected_interests, forKey: "user_selected_interests")
         //print(UserDefaults.standard.value(forKey: "interests")!)
         performSegue(withIdentifier: "toMainSegue", sender: self)
     }
