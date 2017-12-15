@@ -648,7 +648,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                 uniqueInterests.insert(interest)
             }
             
-            /* This approach does not quite work, will be coming back to it
+            //Use this approach to query for multiple POI types
             for interest in uniqueInterests {
                 print("Querying for: \(interest)")
                 
@@ -688,11 +688,12 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                         if let dictionaryResult = result as? NSDictionary {
                             let placeID = dictionaryResult["id"]
                             let name = dictionaryResult["name"]
+                            let types = dictionaryResult["types"] as! Array<String>
                             let geometry = dictionaryResult["geometry"] as? NSDictionary
                             let location = geometry!["location"] as? NSDictionary
                             let latitude = location!["lat"]
                             let longitude = location!["lng"]
-                            let placeInfo = PlaceData(name: name as! String, id: placeID as! String, coordinate: CLLocation(latitude: latitude as! CLLocationDegrees, longitude: longitude as! CLLocationDegrees))
+                            let placeInfo = PlaceData(name: name as! String, id: placeID as! String, coordinate: CLLocation(latitude: latitude as! CLLocationDegrees, longitude: longitude as! CLLocationDegrees), types: types)
                             
                             if self.resultsData.contains(where: {$0.id == (placeID as! String)}) {
                                 //Do nothing
@@ -710,11 +711,14 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                     self.POIList.reloadData()
                     self.POIList.isHidden = false
                     self.view.bringSubview(toFront: self.POIList)
+                    
+                    self.directionsButton.isHidden = false
+                    self.view.bringSubview(toFront: self.directionsButton)
                 }
                 
             }
- */
             
+            /*
             var urlString = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(centerLat),\(centerLong)&radius=\(radiusString)&type=restaurant&key=\(appDelegate.GMSPlacesWebServicesKey)"
             
             let url = URL(string: urlString)
@@ -772,6 +776,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                 self.directionsButton.isHidden = false
                 self.view.bringSubview(toFront: self.directionsButton)
             }
+ */
         }
     }
     
