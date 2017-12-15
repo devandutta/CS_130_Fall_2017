@@ -76,6 +76,10 @@ class IntegrationTest : XCTestCase {
         timeAndLocationController.endTimeInfo = NSDate.init(timeIntervalSinceNow: timeIntervalGap)
     }
     
+    /**
+     Detailed integration test which tests the entire flow of the app. We first set the start and end places by using hardcoded values
+     for places in Los Angeles. We then specify a time interval of 2 hours, with our start time being the current time during execution. We then simulate the pressing of the done button. Upon success, we transition to the map view by calling unwindToMapView. This function parses the user input and draws the route on the map, thus completing the functionality.
+    **/
     func testIntegrationTest() {
         setStartAndEndPlace()
         setStartAndEndTime()
