@@ -66,7 +66,7 @@ To successfully develop and design this app, it is necessary to keep common pitf
 
 **UML Class Diagram below**
 
-![UML](images/UML_Part_A.PNG)
+![UML](/UML_Diagram_Part_C.png)
 
 **Explanation of Class Diagram:**
 The app will be run by UIViewControllers, derived from UIViewController from the UIKit in iOS.  UIResponder and UIApplicationDelegate have been included because AppDelegate needs to implement and extend them, respectively.  UIViewController has been included because every ViewController will have to extend it.  All object types that begin with “GMS” indicate Google Mapping Services objects from the Google Maps API, as well as the Google Places API.  All other object types that begin with “UI” indicate views that were used from Apple’s UIKit for iOS.
