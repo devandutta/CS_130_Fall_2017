@@ -45,30 +45,29 @@ class InterestsTest : XCTestCase {
     
     func testSelectEntertainment() {
         interestController.select_Entertainment(dummySender)
-        XCTAssertTrue(interestController.interests.elementsEqual(["Entertainment"]))
+        XCTAssertTrue(interestController.interests.elementsEqual(["amusement_park", "aquarium", "bowling_alley", "movie_theater", "zoo"]))
     }
     
     func testSelectGardens() {
         interestController.selectGardens(dummySender)
-        XCTAssertTrue(interestController.interests.elementsEqual(["Gardens"]))
+        XCTAssertTrue(interestController.interests.elementsEqual(["park"]))
     }
     
     func testSelectFood() {
         interestController.selectFood(dummySender)
-        XCTAssertTrue(interestController.interests.elementsEqual(["Food"]))
+        XCTAssertTrue(interestController.interests.elementsEqual(["restaurant"]))
     }
     
-    func testSelectHistory() {
-        interestController.selectHistory(dummySender)
-        XCTAssertTrue(interestController.interests.elementsEqual(["History"]))
+    func testSelectDrinks() {
+        interestController.selectDrinks(dummySender)
+        XCTAssertTrue(interestController.interests.elementsEqual(["bar", "night_club"]))
     }
     
     func testSelectAll() {
         interestController.select_Entertainment(dummySender)
         interestController.selectGardens(dummySender)
         interestController.selectFood(dummySender)
-        interestController.selectHistory(dummySender)
-        XCTAssertTrue(interestController.interests.elementsEqual(["Entertainment", "Gardens", "Food", "History"]))
+        interestController.selectDrinks(dummySender)
+        XCTAssertTrue(interestController.interests.elementsEqual(["amusement_park", "aquarium", "bowling_alley", "movie_theater", "zoo", "park", "restaurant", "bar", "night_club"]))
     }
-    
 }
