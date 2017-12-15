@@ -61,19 +61,33 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Hour Minutes" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qs5-ZP-tRG">
-                                <rect key="frame" x="262" y="74" width="97" height="64"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zFG-MM-eFD">
+                                <rect key="frame" x="3" y="75" width="366" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                <color key="backgroundColor" red="0.60877048970000003" green="0.64634001259999996" blue="0.68240207429999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
-                                <color key="shadowColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="shadowColor" red="0.6153367462731566" green="0.61454818325809446" blue="0.62832241494038388" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <size key="shadowOffset" width="-1" height="-1"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NSR-Uy-cr4">
-                                <rect key="frame" x="16" y="74" width="97" height="64"/>
+                            <view alpha="0.80000000000000004" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mkE-mR-gQ5">
+                                <rect key="frame" x="3" y="75" width="28" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" title="Directions"/>
+                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Hour Minutes" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qs5-ZP-tRG">
+                                <rect key="frame" x="3" y="75" width="366" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                                <size key="shadowOffset" width="4" height="4"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NSR-Uy-cr4">
+                                <rect key="frame" x="297" y="327" width="71" height="71"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="directions.png"/>
                                 <connections>
                                     <action selector="openGoogleMaps:" destination="BYZ-38-t0r" eventType="touchUpInside" id="iMp-sY-W0Z"/>
                                 </connections>
@@ -98,9 +112,11 @@
                     </navigationItem>
                     <connections>
                         <outlet property="POIList" destination="wCi-7r-EeO" id="8Px-qb-V9Z"/>
+                        <outlet property="backgroundProgressBar" destination="zFG-MM-eFD" id="NkS-VH-XJx"/>
                         <outlet property="directionsButton" destination="NSR-Uy-cr4" id="bKw-vy-Vtj"/>
                         <outlet property="flexibleTime" destination="qs5-ZP-tRG" id="tiy-TN-rmi"/>
                         <outlet property="interestsBarButton" destination="OAJ-Mp-Zdr" id="ag1-mn-tvK"/>
+                        <outlet property="progressBar" destination="mkE-mR-gQ5" id="4ZV-P5-mDc"/>
                         <outlet property="tripPlanning" destination="xcQ-hg-etr" id="sev-BU-tAH"/>
                     </connections>
                 </viewController>
@@ -402,6 +418,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="directions.png" width="90" height="90"/>
         <image name="drinks_base.png" width="336" height="314"/>
         <image name="drinks_highlight.png" width="336" height="314"/>
         <image name="entertainment_base.png" width="336" height="314"/>

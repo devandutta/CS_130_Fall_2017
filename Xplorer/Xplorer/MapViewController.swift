@@ -79,13 +79,15 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     var endLocation: CLLocationCoordinate2D = CLLocationCoordinate2D()
     var polylines: [GMSPolyline] = []
     var freeTime: Int = 0
+    var maxDurationForTravel : Int = 0
     
+    @IBOutlet weak var backgroundProgressBar: UILabel!
     @IBOutlet weak var tripPlanning: UIBarButtonItem!
     @IBOutlet weak var interestsBarButton: UIBarButtonItem!
     @IBOutlet weak var POIList: UITableView!
     @IBOutlet weak var directionsButton: UIButton!
     @IBOutlet weak var flexibleTime: UILabel!
-    
+    @IBOutlet weak var progressBar: UIView!
     //In case the location preferences have not been set, this is the location of Apple headquarters
     let defaultLocation = CLLocation(latitude: 37.33182, longitude: -122.03118)
 
@@ -171,14 +173,29 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         //Make the flexibleTime label hidden initially and set its parameters
         flexibleTime.numberOfLines = 2
         flexibleTime.isHidden = true
-        flexibleTime.layer.borderColor = UIColor.darkGray.cgColor
-        flexibleTime.layer.borderWidth = 3.0
+        flexibleTime.layer.cornerRadius = 8
+       
+
+
+        backgroundProgressBar.layer.borderColor = UIColor.white.cgColor
+        backgroundProgressBar.layer.borderWidth = 1.0
+        backgroundProgressBar.layer.cornerRadius = 8
+        backgroundProgressBar.layer.borderColor = UIColor.white.cgColor
+        backgroundProgressBar.layer.borderWidth = 1.0
+        backgroundProgressBar.clipsToBounds = true
+        backgroundProgressBar.isHidden = true
+//        self.view.addSubview(backgroundProgressBar)
+        
         
         //Hide the directions button
         directionsButton.isHidden = true
-        directionsButton.layer.borderColor = UIColor.darkGray.cgColor
-        directionsButton.layer.borderWidth = 3.0
+       
         
+        self.view.addSubview(progressBar)
+        progressBar.backgroundColor = UIColor.init(red:0.06, green:0.51, blue:0.88, alpha:1.0)
+        progressBar.isHidden = true
+        progressBar.layer.cornerRadius = 8
+      
     }
 
     /**
@@ -199,12 +216,21 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
      - Returns: void
      
      */
-    func prepareFlexibleTime(seconds: Int) {
+    func prepareFlexibleTime(seconds: Int, maxDuration:Int) {
+        let maxwidth = flexibleTime.frame.width
         let hours = seconds/3600
         let minutes = (seconds % 3600) / 60
         let timeText = "\(hours) hours, \(minutes) minutes"
         self.flexibleTime.text = timeText
         self.flexibleTime.isHidden = false
+        self.progressBar.frame.size.width = maxwidth - (CGFloat(Float(seconds)/Float(maxDuration)) * maxwidth)
+        print("max duration is \(maxDuration)")
+        print("seconds are \(seconds)")
+        print(self.progressBar.frame.size.width)
+        progressBar.isHidden = false
+        backgroundProgressBar.isHidden = false
+        self.view.bringSubview(toFront: backgroundProgressBar)
+        self.view.bringSubview(toFront: progressBar)
         self.view.bringSubview(toFront: flexibleTime)
     }
     
@@ -353,7 +379,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                     //Get the type information and update free time label
                     let timeToBeAdded = returnPOITimeEstimate(types: types)
                     self.freeTime = self.freeTime + timeToBeAdded
-                    self.prepareFlexibleTime(seconds: freeTime)
+                    self.prepareFlexibleTime(seconds: freeTime, maxDuration: maxDurationForTravel)
                     
                     marker.map = nil
                     markers.remove(at: index!)
@@ -392,7 +418,7 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             
             //Update flexible time label
             freeTime = timeLeft
-            self.prepareFlexibleTime(seconds: freeTime)
+            self.prepareFlexibleTime(seconds: freeTime, maxDuration: maxDurationForTravel)
         }
             
         else {
@@ -537,7 +563,8 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             // Set up initial time for flexibleTime
             let seconds = Int(sourceViewController.userTimeIntervalDouble - sourceViewController.totalDuration)
             freeTime = seconds
-            self.prepareFlexibleTime(seconds: seconds)
+            maxDurationForTravel = seconds
+            self.prepareFlexibleTime(seconds: seconds, maxDuration: maxDurationForTravel)
             
             //Put start and end markers on map
             addMarker(place: startPlace, type: "start")
@@ -890,7 +917,8 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             let path = GMSMutablePath(fromEncodedPath: polylinePoints)
             let polyline = GMSPolyline(path: path)
             polyline.strokeWidth = 3
-            polyline.strokeColor = UIColor.init(red: 0.58, green: 0.624, blue:0.71 , alpha: 1.0) // 0.58, 0.624, 0.71
+            polyline.strokeColor = UIColor.init(red:0.06, green:0.51, blue:0.88, alpha:1.0)
+                //UIColor.init(red: 0.58, green: 0.624, blue:0.71 , alpha: 1.0) // 0.58, 0.624, 0.71
 
             polyline.map = self.mapView
             
