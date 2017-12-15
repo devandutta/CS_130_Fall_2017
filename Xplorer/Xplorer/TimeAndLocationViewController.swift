@@ -18,11 +18,14 @@ import GooglePlaces
  This class extends UIViewController and implements UITextFieldDelegate and GMSAutocompleteViewControllerDelegate.
  
  Properties:
- *  `lastUITextFieldSelected`:      This property represents the last text field that the user selected and indicates to the view whether to place the user's searched location in the start or end text field.
- *  `startPlace`:                   This property represents the GMSPlace that is the start.
- *  `endPlace`:                     This property represents the GMSPlace that is the end.
- *  `startTimeInfo`:                This property represents the time-zone agnostic start time from a UIDatePicker.
- *  `endTimeInfo`:                  This property represents the time-zone agnostic end time from a UIDatePicker.
+ *  `lastUITextFieldSelected`:      A UITextField that represents the last text field that the user selected and indicates to the view whether to place the user's searched location in the start or end text field.
+ *  `startPlace`:                   A GMSPlace that represents the start place.
+ *  `endPlace`:                     A GMSPlace that represents the end place.
+ *  `startTimeInfo`:                An NSDate that represents the start time.
+ *  `endTimeInfo`:                  An NSDate that represents the end time.
+ *  `userTimeIntervalDouble`:       A Double representing the user entered time delta in seconds.
+ *  `totalDuration`:                A Double representing how long it will take to get from the startPlace to the endPlace.
+ *  `cancelPressed`:                A Bool that records whether the user cancelled the input selection.
  
  Outlets:
  *  startLocation:  UITextField that holds the start location.
@@ -30,6 +33,7 @@ import GooglePlaces
  *  startTime:      UIDatePicker that holds the start time.
  *  endTime:        UIDatePicker that holds the end time.
  *  doneButton:     UIBarButtonItem that sits to the right in the navigation bar and only activates once the user has selected valid start and end locations.
+ *  cancelButton:   UIBarButtonItem that sits to the left in the navigation bar and returns back to the map view.
  
  Constants:
  *  appDelegate:    This is a reference to the application's AppDelegate object.
@@ -96,9 +100,9 @@ class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSA
     }
 
     /**
- This method is used to dispose of any resources that can be recreated in the event of a memory warning.
+     This method is used to dispose of any resources that can be recreated in the event of a memory warning.
      - Returns: void
- */
+     */
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -195,6 +199,17 @@ class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSA
         handleAutocomplete(sender: sender)
     }
     
+    /**
+     This method is the action handler (and is specified with @IBAction) for the cancelButton UIBarButtonItem.
+     
+     It simply:
+     *  Records that the user canceled inputting parameters
+     *  Unwinds to the map view
+     
+     - Parameter sender:    This object represents the specific UIBarButtonItem that was tapped on.
+     
+     - Returns: void
+     */
     @IBAction func cancelButtonPressed(_ sender: UIBarButtonItem) {
         self.cancelPressed = true
         self.performSegue(withIdentifier: "unwindToMapViewIdentifier", sender: self)
@@ -212,6 +227,17 @@ class TimeAndLocationViewController: UIViewController, UITextFieldDelegate, GMSA
         handleAutocomplete(sender: sender)
     }
     
+    /**
+     This method is the action handler (and is specified with @IBAction) for the doneButton UIBarButtonItem.
+     
+     It simply:
+     *  Validates the user input for times and for locations
+     *  Unwinds to the map view
+     
+     - Parameter sender:    This object represents the specific UIBarButtonItem that was tapped on.
+     
+     - Returns: void
+     */
     @IBAction func doneButtonPressed(_ sender: UIBarButtonItem) {
         
         //COMPARE LOCATIONS:
