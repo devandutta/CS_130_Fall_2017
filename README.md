@@ -37,29 +37,31 @@ Once the user has clicked on Find Itineraries, it shows them them an itinerary t
 
 # User Stories
 1. A brand new user to the app will begin by downloading the app, entering his/her personal interests, and then specifying start time and departure location, as well as end time and arrival location.  The app will return a list of POIs (containing associated costs and transportation methods) that are along the fastest route to the arrival location.  The user, delighted by this automation, follows the itinerary in the app and enjoys the day!
-1. A user who has used the app before will be able to open the app without specifying his/her interests again (but does have the option to change them if he/she so desires), enter the start and end times and locations, and then filter the returned list of POIs to get back only new places that he/she has not visited yet.
+1. A user who has used the app before will be able to open the app without specifying his/her interests again (but does have the option to change them if he/she so desires), enter the start and end times and locations, and then filter the returned list of POIs to get back places that match the user's interests.
 
 # Usage scenarios:
 ### Scenario 1: User is totally new to the app
 1. User downloads the app from the iOS App Store.
 1. User is in a city he/she would like to explore, while honoring their commitments for the day.
 1. User opens our iOS app on his/her iPhone.
-1. The app asks him/her for his/her interests (examples being art, museums, beaches, restaurants etc.) after displaying the splash screen.
+1. The app asks him/her for his/her interests (examples being entertainment, bars, parks, restaurants etc.) after displaying the splash screen.
 1. User sees home screen asking him/her for start destination, departure time, end destination and arrival time.
-  1. If user wants to change his/her interests, he/she can go to Settings and change the interests.
-1. After filling out the information, user sees a list of places as an itinerary, complete with POI distances and associated costs (if the itinerary involves transportation, entrance fees, or food cost).
-1. User can adapt this list based on cost and travel history filters.
+  1. If user wants to change his/her interests, he/she can click on the Interests button and change the interests.
+1. After filling out the information, user sees a list of places as an itinerary, complete with POI addresses and associated costs.
+1. User can adapt this list based on cost.
 1. Upon finalizing the itinerary by selecting options of interest, the user sees a route from his/her start to end destination, with the places he/she selected as en route stops for visiting.
 1. The app keeps track of what places the user visits based on the itinerary he/she follows.
+1. The app tells the user how much time is left on the trip so that the user paces themselves accordingly.
 
-### Scenario 2: User is visiting a city that he/she has been in before and wants to explore more
+### Scenario 2: User is exploring a city and wants to add points of interest to the trip
 1. User opens app.
 1. Splash screen displays and then takes the user to the home screen with departure time and location and arrival time and location.
-  1. If user wants to change his/her interests, he/she can go to Settings and change the interests.
-1. After filling out the information, user sees a list of places as an itinerary, complete with POI distances and associated costs (if the itinerary involves transportation, entrance fees, or food cost).
-1. If the app displays locations that the user has visited, the user can press the “Refresh” button to have the app generate a list that does not contain previously visited POIs.
-  1. If the user wants to modify his/her interests, then he/she can press the “Back” button, and follow step 2a to go to Settings and modify his/her profile interests.
-1. The user would then follow steps 7-9 of the previous scenario.
+  11. If user wants to change his/her interests, he/she can go click on the Interests button and change the interests.
+1. After filling out the information, user sees a list of places as an itinerary, complete with POI distances and associated costs.
+1. The user picks out the places they want to visit and sets off on their journey. The app lets the user know how much time is left on the trip
+1. In the middle of the trip, the user decides to add one more place of interest to the route
+  11. The app approximates the time the user will spend at the new point of interest and adds it to the route if there is sufficient time
+  11. If there is not enough time left in the trip, the app lets the user know that there isn't enough time left to visit the new place
 
 # UML Use Case Diagram
 
