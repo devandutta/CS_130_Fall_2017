@@ -25,16 +25,6 @@ The **Time and Location View** is where the user is meant to enter the start and
  
 To find the interests, the application conducts a radial search from the midpoint between the start and end locations. All places that match with the user’s interests are selected to be shown in the interest table.
 
-# App Mockups and Screenshots
-
-![Image1](images/mockup_1.PNG)
-
-The Splash Screen introduces the concept and usage of the app to the users. The first screen allows them to select some interests to be used throughout the application. The main screen lets them pick a starting and ending location and time.
-
-![Image2](images/mockup_2.PNG)
-
-Once the user has clicked on Find Itineraries, it shows them them an itinerary that they can browse through or refresh after filtering on the basis of cost and location history.
-
 # User Stories
 1. A brand new user to the app will begin by downloading the app, entering his/her personal interests, and then specifying start time and departure location, as well as end time and arrival location.  The app will return a list of POIs (containing associated costs and transportation methods) that are along the fastest route to the arrival location.  The user, delighted by this automation, follows the itinerary in the app and enjoys the day!
 1. A user who has used the app before will be able to open the app without specifying his/her interests again (but does have the option to change them if he/she so desires), enter the start and end times and locations, and then filter the returned list of POIs to get back places that match the user's interests.
