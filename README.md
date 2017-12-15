@@ -91,23 +91,38 @@ The **Xplorer.xcodeproj** folder contains the main runnable part of the code, wh
 
 # Testing
 ### Overview
-For our project, we used Xcode’s testing framework named XCTest. XCTest is very similar to the JUnit testing framework. Currently, we have a single suite of tests containing ten test cases. Each test case can be run independently or the entire suite can be run at once. Before each test is run, the functions setUp() and tearDown() are run before and after the test respectively. These functions contain code regarding allocation and deallocation of resources required by the test cases.
+For our project, we used Xcode’s testing framework named XCTest. XCTest is very similar to the JUnit testing framework. Currently, we have three suites of tests containing in total around 20 test cases. Each test case can be run independently or entire suites can be run at once. Before each test is run, the functions setUp() and tearDown() are run before and after the test respectively. These functions contain code regarding allocation and deallocation of resources required by the test cases.
 Following is the link to the folder containing the test cases: https://github.com/devandutta/CS_130_Fall_2017/tree/master/Xplorer/XplorerTests
 
-### Testing Scenarios
-Currently, our application offers functionality to select the start and end location along with the start and end times. We focus our testing mainly on one function which is responsible for fetching and sending the user input data to the Google Maps API. The Maps API returns the start and end locations in GMSPlace objects, which are then sent to the MapViewController tomark the start and end locations on the map. In the future, we will add more extensive testing to test the route planning functionality.
+### Testing Structure
+Our testing suites are organized as follows:
+1. Integration Test Suite - This test suite contains helper functions and one single integration test which covers the complete flow of our application.
+2. InterestView Test Suite - This test suite contains around 10 unit test cases which completely test our interest view controller. This is the controller that the user interacts with the first time they open our application to select their interests.
+3. TimeAndLocation Test Suite - This suite contains around 10 unit test cases which test the TimeAndLocationViewController, responsible for collecting all the user data required for planning the itinerary.
 
-Following are our 4 testing scenarios which cover general functionality and potential failures:
+### Testing Methodology
+Our test cases are void functions, which also return void. Each test case may have 0 or multiple assertions. The input to the test cases is usually passed in via class variables, such that the functions themselves take no arguments. Since the setup() and tearDown() functions are run before and after every test respectively, we do not have to worry about the state of the objects being used in our test cases. A generic example of our setup() function is described as follows:
 
-1. Verify start location is set when user inputs start location in GMSAutocompleteViewController. The GMSAutocompleteViewController is offered by the Google Places API. We need to verify that our own controller (TimeAndLocationViewController) sets the start location correctly after the user inputs it, and does not cause any unwanted side effects. The expected outcome is the startLocation object being non-nil (“nil” is Swift and Objective-C’s “null), the end location being nil, and the “Done” button being disabled since the user has not input the end location yet. Violation of any of these conditions leads to an assertionError and build failure.
+  - Instantiate the main storyboard so that segues are setup
+  - Instantiate any view controllers needed 
+  - Instantiate any mock UI buttons/fields as needed
+  - Access the view field of every instantiated controller, in order to run the viewDidLoad() built-in method for the controller
 
-2. Verify end location is set when user inputs end location in GMSAutocompleteViewController. We need to verify that our own controller (TimeAndLocationViewController) sets the end location correctly after the user inputs it, and does not cause any unwanted side effects. The expected outcome is the endLocation being non-nil, the start location being nil, and the “Done” button being disabled since the user has not input the start location yet. Violation of any of these conditions leads to an assertionError and build failure.
+Our tearDown() function does not do anything since we are not allocating any resources that we need to free explicitly (Swift has garbage collection).
+A test succeeds if none of the assertions fail, and the code being tested does not throw any exceptions. Our test cases have descriptive names which makes it very easy to know what exact functionality they are testing.
 
-3. Verify user is able to click the “Done” button and proceed to the routing screen if and only if both the start and end locations have been specified by the user. The expected outcome is the “Done” button being enabled. If it is not, the test fails.
+For our project, we added test cases for controllers as soon as the controllers were completed. Further changes to controllers resulted in changes to some of the test cases as well. Thus, we incorporated test driven development by making sure our test cases were always in sync with the actual code.
 
-4. Verify all view controllers and their views are non-nil after being instantiated. This tests all the view loading code of our view controllers by ensuring everything is properly instantiated. We also check that our UITextField objects return true when the user presses the “enter” key. The expected outcome is the view controllers and view being non-nil.  This outcome is confirm by using the AssertIsNotNil() function. 
-
-These testing scenarios allow us to ensure that we are properly sanitizing all the user inputs before proceeding to the routing, along with correct general functionality of the application.
+### Integration Test
+Once all the functionality and unit testing of our application was complete, we wrote a single integration test for the application which does not use any mock objects, and tests the complete flow of our application. The integration test is described in detail as follows:
+- In our setUp function, we first instantiate the storyboard, and all the controllers needed (TimeAndLocation, AutoComplete along with the MapView controller).
+- Using real Google places (TLT restaurant in Westwood and Philz Coffee in Santa Monica, LA), we set the start and end locations.
+- For the start and end times, we use the current time as the start time and current time + 2 hours as the end time.
+- We then simulate the pressing of the done button just as a user would, by calling the doneButtonPressed() function instead of modifying the class variables directly or calling any helper functions. 
+- If the code does not thrown any exceptions, then our input is correct and we transition to the MapViewController by using a segue.
+- The unwindToMapView() function is called, which performs the actual routing by drawing the polyline and adding markers to the map view.
+- We update the polyline to make sure it is as expected.
+Thus, our integration test starts by simulating everything that a user would do, barring the selection of interests since that only happens once in the application and has already been tested via unit tests.
 
 # Capability
 **Shashank Khanna** has iOS development and System design. He has developed several iOS applications in Objective-C, one of which was chosen for the app store with over 200 downloads across three countries and another was responsible for winning the grand prize for HackGT. He has system design experience, through designing high-traffic backend web features for large e-commerce companies. His estimated role in the team would be to do class design and do the Objective-C implementation of the iOS application. He would be developing the application layer that will interact with the API, display the required data and contain the business logic. For Part A, Shashank contributed to the feature description, researched the Google Distance Matrix API, and estimated its feasibility as to displaying different route types within the application. 
