@@ -788,11 +788,12 @@ class MapViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         marker.title = place?.name
         marker.snippet = place?.formattedAddress
         if(type == "start") {
-            marker.icon = GMSMarker.markerImage(with: UIColor.init(red: 0.643, green: 0.078, blue: 0.157, alpha: 1.0)) // 0.643, 0.078, 0.157
+            marker.icon = GMSMarker.markerImage(with: UIColor.init(red: 0.027, green: 0.561, blue: 0.365, alpha: 1.0))
+            
         }
         
         else if(type == "end") {
-            marker.icon = GMSMarker.markerImage(with: UIColor.init(red: 0.027, green: 0.561, blue: 0.365, alpha: 1.0)) // 0.027, 0.561, 0.365
+            marker.icon = GMSMarker.markerImage(with: UIColor.init(red: 0.643, green: 0.078, blue: 0.157, alpha: 1.0))
         }
         marker.appearAnimation = .pop
         marker.map = mapView
